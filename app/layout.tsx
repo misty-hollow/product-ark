@@ -5,6 +5,9 @@ import { koKR } from "@clerk/localizations";
 import { Header } from "@/components/header";
 import "./globals.css";
 
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: {
     default: "지구물건보관소",
