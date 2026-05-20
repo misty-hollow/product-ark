@@ -46,7 +46,18 @@
     background-color: var(--bg-base);
     background-image: radial-gradient(rgba(87, 83, 78, 0.12) 0.7px, transparent 0.7px);
     background-size: 18px 18px;
-    font-family: "DM Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-family: "Noto Serif KR", serif;
+  }
+
+  :lang(ko),
+  *:not(:lang(en)) {
+    font-family: "Noto Serif KR", serif;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: "Playfair Display", "Noto Serif KR", serif;
   }
 
   @media print {

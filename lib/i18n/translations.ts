@@ -47,7 +47,61 @@ export const t = {
     footerTagline: "오늘의 사물을 내일의 유산으로",
     footerCopy:
       "© 2026 EARTH OBJECT ARCHIVE. ALL SPECIMEN RECORDS PERMANENTLY KEPT.",
-    archiveStatus: "[Archive Status: Active]"
+    archiveStatus: "[Archive Status: Active]",
+
+    newPageLabel: "NEW REGISTRY ENTRY",
+    newPageTitle: "신규 소장 기록 생성",
+    newPageDesc:
+      "아직 보관소에 등록되지 않은 개체에 대한 기초 아카이브 자료를 작성합니다. 작성된 기록은 보관소의 신규 자료로 등록됩니다.",
+    newPageNotice:
+      "주의: 물론 이상한 것들도 일상에서 경험 가능한 사물이어야 합니다. 진귀 물건은 그들의 관점에서 사실에 기반한 정확한 형태로 작성해 주십시오.",
+    field1Label: "물건 이름",
+    field1Required: "필수",
+    field1Placeholder: "예: 모나미 153 볼펜, 노란색 딱식 프고 이디션",
+    field2Label: "식별 이미지",
+    field2Required: "필수",
+    field2ImageLabel: "REGISTER IMAGE SPECIMEN",
+    field2ImageTitle: "표본 이미지를 선택하세요",
+    field2ImageDesc: "이상의 형식론 실물을 수 하는 이미지를 등록하십시오.",
+    field2ImageFormats: "jpg, jpeg, png, webp / 최대 5MB",
+    field3Label: "기록 해설",
+    field3Required: "필수",
+    field3Placeholder:
+      "이 물건의 형태적 특징, 사용 목적, 또는 이해 인류학적 관점에서의 추정 용도를 서술하십시오.",
+    field3CharCount: "0/160",
+    field4Label: "분류 체계",
+    field4Required: "필수",
+    field4Desc:
+      "대분류, 포분류, 소분류를 차례로 선택합니다. 소분류까지 선택하면 분류가 완성됩니다.",
+    field4Category: "대분류",
+    field4Middle: "중분류",
+    field4Minor: "소분류",
+    cat1: "식생물",
+    cat2: "생활 도구",
+    cat3: "전자/디지털 용품",
+    cat4: "기록/학술 도구",
+    cat5: "착용/휴대 용품",
+    cat6: "기타 미분류 자료",
+    field4SubPrompt: "저장된 분류: 소분류까지 선택하면 표시됩니다",
+    field4SavedPrefix: "저장된 분류:",
+    field5Label: "브랜드/저조사 선택",
+    field5Placeholder: "예: 주식회사 모나미 (Monami Co., Ltd.)",
+    optional: "선택",
+    duplicateTitle: "이미 보존된 기록일 수 있어요.",
+    duplicateDesc:
+      "이 먼저 보존되어 있습니다. 다른 시기나 다른 모습의 물건이라면 새 소장 기록으로 남길 수 있습니다.",
+    selectedImageAlt: "선택한 대표 이미지",
+    submitButton: "기초 기록 등록",
+    submitLoading: "기록 보존 처리 중...",
+    errorNameDescription: "물건 이름과 기록 해설을 입력해주세요.",
+    errorImageRequired: "식별 이미지는 꼭 필요합니다.",
+    errorCategoryRequired:
+      "대분류, 중분류, 소분류까지 대표 분류 체계를 선택해주세요.",
+    errorImageType: "jpg, jpeg, png, webp 형식의 이미지만 기록할 수 있습니다.",
+    errorImageSize: "이미지는 5MB 이하로 올려주세요.",
+    errorUploadParse: "이미지 보존에 실패했습니다. 잠시 후 다시 시도해주세요.",
+    errorUploadFailed: "이미지 보존에 실패했습니다.",
+    errorCreateFailed: "기록을 저장하지 못했습니다."
   },
   en: {
     siteName: "Earth Object Archive",
@@ -98,6 +152,59 @@ export const t = {
     footerTagline: "Today's objects. Tomorrow's heritage.",
     footerCopy:
       "© 2026 EARTH OBJECT ARCHIVE. ALL SPECIMEN RECORDS PERMANENTLY KEPT.",
-    archiveStatus: "[Archive Status: Active]"
+    archiveStatus: "[Archive Status: Active]",
+
+    newPageLabel: "NEW REGISTRY ENTRY",
+    newPageTitle: "New Specimen Record",
+    newPageDesc:
+      "Submit foundational archive data for an object not yet registered. Once submitted, the record will be added to the archive as a new specimen entry.",
+    newPageNotice:
+      "Note: Objects must be things encountered in everyday life. For rare items, describe them accurately and factually from an objective standpoint.",
+    field1Label: "Object Name",
+    field1Required: "Required",
+    field1Placeholder: "e.g. Monami 153 Ballpoint Pen, Yellow Limited Edition",
+    field2Label: "Specimen Image",
+    field2Required: "Required",
+    field2ImageLabel: "REGISTER IMAGE SPECIMEN",
+    field2ImageTitle: "Select a specimen image",
+    field2ImageDesc: "Upload a clear image of the physical object.",
+    field2ImageFormats: "jpg, jpeg, png, webp / Max 5MB",
+    field3Label: "Record Description",
+    field3Required: "Required",
+    field3Placeholder:
+      "Describe the physical characteristics, intended use, or anthropological significance of this object.",
+    field3CharCount: "0/160",
+    field4Label: "Classification",
+    field4Required: "Required",
+    field4Desc:
+      "Select category, subcategory, and type in order. Classification is complete once all three are selected.",
+    field4Category: "Category",
+    field4Middle: "Subcategory",
+    field4Minor: "Type",
+    cat1: "Flora / Fauna",
+    cat2: "Everyday Tools",
+    cat3: "Electronics / Digital",
+    cat4: "Records / Academic",
+    cat5: "Wearables / Carry",
+    cat6: "Unclassified",
+    field4SubPrompt: "Saved classification: displayed once subcategory is selected",
+    field4SavedPrefix: "Saved classification:",
+    field5Label: "Brand / Manufacturer",
+    field5Placeholder: "e.g. Monami Co., Ltd.",
+    optional: "Optional",
+    duplicateTitle: "This record may already exist.",
+    duplicateDesc:
+      "has already been preserved. If this is a different period or form of the object, it may be recorded as a new specimen.",
+    selectedImageAlt: "Selected specimen image",
+    submitButton: "Register Foundational Record",
+    submitLoading: "Preserving record...",
+    errorNameDescription: "Enter the object name and record description.",
+    errorImageRequired: "A specimen image is required.",
+    errorCategoryRequired: "Select category, subcategory, and type.",
+    errorImageType: "Only jpg, jpeg, png, and webp images can be recorded.",
+    errorImageSize: "Images must be 5MB or smaller.",
+    errorUploadParse: "Image preservation failed. Try again shortly.",
+    errorUploadFailed: "Image preservation failed.",
+    errorCreateFailed: "Could not save the record."
   }
 } as const;

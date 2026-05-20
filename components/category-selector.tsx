@@ -5,6 +5,8 @@ import {
   formatCategoryPath,
   type CatalogNode
 } from "@/lib/catalog";
+import { useLang } from "@/lib/i18n/context";
+import { t } from "@/lib/i18n/translations";
 import { cn } from "@/lib/utils";
 
 type CategorySelectorProps = {
@@ -43,6 +45,8 @@ export function CategorySelector({
   selectedCategoryId,
   onChange
 }: CategorySelectorProps) {
+  const { lang } = useLang();
+  const tx = t[lang];
   const selectedPathNodes = selectedCategoryId
     ? findCatalogPathById(categories, selectedCategoryId)
     : null;
@@ -52,27 +56,38 @@ export function CategorySelector({
   const selectedPath = selectedPathNodes
     ? formatCategoryPath(selectedPathNodes.map((node) => node.name))
     : "";
+  const rootLabels: Record<string, string> = {
+    "cat-food": tx.cat1,
+    "cat-daily": tx.cat2,
+    "cat-digital": tx.cat3,
+    "cat-stationery": tx.cat4,
+    "cat-wear": tx.cat5,
+    "cat-etc": tx.cat6
+  };
+  const labelFor = (node: CatalogNode) => rootLabels[node.id] ?? node.name;
 
   return (
     <div className="space-y-4 border border-stone-200 bg-[#FFFCF4]/70 p-4">
       <div>
         <p className="text-sm font-semibold text-stone-800">
           <span className="mr-2 font-mono text-xs text-stone-400">04.</span>
-          분류 체계 <span className="text-xs text-stone-400">필수</span>
+          {tx.field4Label}{" "}
+          <span className="text-xs text-stone-400">{tx.field4Required}</span>
         </p>
         <p className="mt-1 text-xs leading-5 text-stone-500">
-          대분류, 중분류, 소분류를 차례로 선택합니다. 소분류까지 선택하면 보관소
-          분류가 저장됩니다.
+          {tx.field4Desc}
         </p>
       </div>
 
       <div className="space-y-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">대분류</p>
+        <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">
+          {tx.field4Category}
+        </p>
         <div className="flex flex-wrap gap-2">
           {categories.map((node) => (
             <Chip
               key={node.id}
-              label={node.name}
+              label={labelFor(node)}
               selected={majorNode?.id === node.id}
               onClick={() => onChange({ categoryId: node.id, categoryPath: node.name })}
             />
@@ -82,7 +97,9 @@ export function CategorySelector({
 
       {majorNode ? (
         <div className="space-y-2">
-          <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">중분류</p>
+          <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">
+            {tx.field4Middle}
+          </p>
           <div className="flex flex-wrap gap-2">
             {majorNode.children.map((node) => (
               <Chip
@@ -103,7 +120,9 @@ export function CategorySelector({
 
       {middleNode ? (
         <div className="space-y-2">
-          <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">소분류</p>
+          <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">
+            {tx.field4Minor}
+          </p>
           <div className="flex flex-wrap gap-2">
             {middleNode.children.map((node) => (
               <Chip
@@ -127,9 +146,9 @@ export function CategorySelector({
       ) : null}
 
       <div className="border border-stone-200 bg-[#F4F1EA]/80 px-3 py-2 text-sm text-stone-500">
-        저장될 분류:{" "}
+        {selectedPath ? tx.field4SavedPrefix : tx.field4SubPrompt}{" "}
         <span className="font-semibold text-stone-800">
-          {selectedPath || "소분류까지 선택하면 표시됩니다"}
+          {selectedPath || ""}
         </span>
       </div>
     </div>
