@@ -11,23 +11,23 @@ export type CatalogNode = {
 export const CATALOG_TREE: CatalogNode[] = [
   {
     id: "cat-food",
-    name: "식생활 자료",
+    name: "식생활",
     slug: "food-life",
-    description: "먹고 마시는 행위와 관련된 일상 물질문화 자료입니다.",
+    description: "일상에서 먹고 마시고 보관하는 식생활 관련 물건입니다.",
     level: 1,
     sortOrder: 10,
     children: [
       {
         id: "cat-food-drink",
-        name: "마시는 자료",
+        name: "음료",
         slug: "drink-materials",
-        description: "음료, 유제품, 마실 수 있는 가공품입니다.",
+        description: "마시는 형태로 유통되거나 소비되는 식생활 물건입니다.",
         level: 2,
         sortOrder: 10,
         children: [
           {
             id: "cat-food-drink-milk",
-            name: "우유/유제품",
+            name: "가공유",
             slug: "milk-dairy",
             level: 3,
             sortOrder: 10,
@@ -35,7 +35,7 @@ export const CATALOG_TREE: CatalogNode[] = [
           },
           {
             id: "cat-food-drink-soft",
-            name: "탄산/음료",
+            name: "탄산음료",
             slug: "soft-drinks",
             level: 3,
             sortOrder: 20,
@@ -43,7 +43,7 @@ export const CATALOG_TREE: CatalogNode[] = [
           },
           {
             id: "cat-food-drink-tea",
-            name: "차/커피",
+            name: "커피/차",
             slug: "tea-coffee",
             level: 3,
             sortOrder: 30,
@@ -53,15 +53,15 @@ export const CATALOG_TREE: CatalogNode[] = [
       },
       {
         id: "cat-food-eat",
-        name: "먹는 자료",
+        name: "식품",
         slug: "eating-materials",
-        description: "간편식, 간식, 면류 등 섭취 대상 자료입니다.",
+        description: "끼니, 간식, 면류처럼 먹는 형태로 소비되는 식생활 물건입니다.",
         level: 2,
         sortOrder: 20,
         children: [
           {
             id: "cat-food-eat-meal",
-            name: "간편식",
+            name: "즉석식",
             slug: "convenience-meals",
             level: 3,
             sortOrder: 10,
@@ -69,7 +69,7 @@ export const CATALOG_TREE: CatalogNode[] = [
           },
           {
             id: "cat-food-eat-snack",
-            name: "과자/간식",
+            name: "간식",
             slug: "snacks",
             level: 3,
             sortOrder: 20,
@@ -77,7 +77,7 @@ export const CATALOG_TREE: CatalogNode[] = [
           },
           {
             id: "cat-food-eat-noodle",
-            name: "라면/면류",
+            name: "라면",
             slug: "instant-noodles",
             level: 3,
             sortOrder: 30,
@@ -299,9 +299,9 @@ export const CATALOG_TREE: CatalogNode[] = [
     children: [
       {
         id: "cat-wear-clothes",
-        name: "입는 자료",
+        name: "의류와 신발",
         slug: "clothing-materials",
-        description: "의류와 신발 등 착용 대상 자료입니다.",
+        description: "몸에 착용하는 의류, 신발, 기본 착장 물건입니다.",
         level: 2,
         sortOrder: 10,
         children: [
