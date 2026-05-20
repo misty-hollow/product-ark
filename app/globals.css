@@ -14,6 +14,14 @@
     --accent-active: #2c6e49;
     --border-fine: rgba(26, 26, 24, 0.1);
     --border-medium: rgba(26, 26, 24, 0.18);
+    --text-xs: 0.75rem;
+    --text-sm: 0.875rem;
+    --text-base: 1.125rem;
+    --text-lg: 1.375rem;
+    --text-xl: 1.75rem;
+    --text-2xl: 2.5rem;
+    --text-3xl: 4rem;
+    --text-hero: clamp(3.5rem, 8vw, 7rem);
     --background: 48 33% 97%;
     --foreground: 28 15% 18%;
     --card: 0 0% 100%;
@@ -57,7 +65,23 @@
   h1,
   h2,
   h3 {
-    font-family: "Playfair Display", "Noto Serif KR", serif;
+    font-family: "Noto Serif KR", serif;
+  }
+
+  h1,
+  h2 {
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    word-break: keep-all;
+  }
+
+  p,
+  li {
+    font-weight: 300;
+    letter-spacing: 0.01em;
+    line-height: 1.9;
+    word-break: keep-all;
   }
 
   @media print {
@@ -111,6 +135,27 @@
       linear-gradient(to right, rgba(87, 83, 78, 0.08) 1px, transparent 1px),
       linear-gradient(to bottom, rgba(87, 83, 78, 0.08) 1px, transparent 1px);
     background-size: 42px 42px;
+  }
+
+  .label {
+    font-family: "DM Mono", monospace;
+    font-size: var(--text-xs);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  .hero {
+    min-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 6rem;
+  }
+
+  .section-spacious {
+    padding-top: clamp(5rem, 10vw, 10rem);
+    padding-bottom: clamp(5rem, 10vw, 10rem);
   }
 
   .animate-in {

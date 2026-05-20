@@ -2,12 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { useLang } from "@/lib/i18n/context";
-import { t } from "@/lib/i18n/translations";
-
 export function VaultStatusLog() {
-  const { lang } = useLang();
-  const tx = t[lang];
   const [time, setTime] = useState("00:00:00");
 
   useEffect(() => {
@@ -36,17 +31,17 @@ export function VaultStatusLog() {
           <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--accent-active)]" />
         </span>
         <p>
-          <span className="font-medium text-[var(--ink-primary)]">{tx.statusLabel}</span>
+          <span className="font-medium text-[var(--ink-primary)]">STATUS / ENV-LOG</span>
           <span className="mx-2 text-[var(--ink-muted)]">·</span>
-          {tx.statusTemp} <span className="font-medium text-[var(--ink-primary)]">20.5°C</span>
+          수장고 온도 <span className="font-medium text-[var(--ink-primary)]">20.5°C</span>
           <span className="mx-2 text-[var(--ink-muted)]">·</span>
-          {tx.statusHumidity} <span className="font-medium text-[var(--ink-primary)]">45.0%</span>
+          습도 <span className="font-medium text-[var(--ink-primary)]">45.0%</span>
           <span className="mx-2 text-[var(--ink-muted)]">·</span>
-          {tx.statusState} <span className="font-medium text-[var(--ink-primary)]">{tx.statusStateValue}</span>
+          상태 <span className="font-medium text-[var(--ink-primary)]">정상</span>
         </p>
       </div>
       <p className="shrink-0 text-[10px] uppercase tracking-widest text-[var(--ink-muted)]">
-        {tx.statusSync}: {time}
+        LAST SYNC: {time}
       </p>
     </div>
   );

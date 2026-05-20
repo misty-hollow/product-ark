@@ -4,7 +4,6 @@ import { koKR } from "@clerk/localizations";
 
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
-import { LangProvider } from "@/lib/i18n/context";
 import "./globals.css";
 
 export const runtime = "nodejs";
@@ -30,16 +29,14 @@ export default function RootLayout({
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
           <link
-            href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Serif+KR:wght@300;400;500;700&family=DM+Mono:wght@300;400;500&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600;700;900&family=DM+Mono:wght@300;400;500&display=swap"
             rel="stylesheet"
           />
         </head>
         <body>
-          <LangProvider>
-            <Header />
-            <main>{children}</main>
-            <Footer />
-          </LangProvider>
+          <Header />
+          <main>{children}</main>
+          <Footer />
         </body>
       </html>
     </ClerkProvider>

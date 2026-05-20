@@ -10,7 +10,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        display: ["Playfair Display", "Noto Serif KR", "serif"],
+        display: ["Noto Serif KR", "serif"],
         sans: ["Noto Serif KR", "serif"],
         mono: ["DM Mono", "monospace"]
       },

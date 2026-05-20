@@ -12,8 +12,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import type { CatalogNode } from "@/lib/catalog";
-import { useLang } from "@/lib/i18n/context";
-import { t } from "@/lib/i18n/translations";
 import { ACCEPTED_IMAGE_TYPES, MAX_IMAGE_SIZE } from "@/lib/uploads";
 
 type DuplicateState =
@@ -39,8 +37,6 @@ export function ItemForm({
   initialName?: string;
   categories: CatalogNode[];
 }) {
-  const { lang } = useLang();
-  const tx = t[lang];
   const router = useRouter();
   const [name, setName] = useState(initialName);
   const [description, setDescription] = useState("");
@@ -88,13 +84,13 @@ export function ItemForm({
 
     if (!ACCEPTED_IMAGE_TYPES.includes(selectedFile.type as never)) {
       setFile(null);
-      setError(tx.errorImageType);
+      setError("jpg, jpeg, png, webp 형식의 이미지만 기록할 수 있습니다.");
       return;
     }
 
     if (selectedFile.size > MAX_IMAGE_SIZE) {
       setFile(null);
-      setError(tx.errorImageSize);
+      setError("이미지는 5MB 이하로 올려주세요.");
       return;
     }
 
@@ -106,17 +102,17 @@ export function ItemForm({
     setError(null);
 
     if (!name.trim() || !description.trim()) {
-      setError(tx.errorNameDescription);
+      setError("물건 이름과 기록 해설을 입력해주세요.");
       return;
     }
 
     if (!file) {
-      setError(tx.errorImageRequired);
+      setError("식별 이미지는 꼭 필요합니다.");
       return;
     }
 
     if (!primaryCategoryId || categoryPath.split(" > ").length < 3) {
-      setError(tx.errorCategoryRequired);
+      setError("대분류, 중분류, 소분류까지 대표 분류 체계를 선택해주세요.");
       return;
     }
 
@@ -140,12 +136,12 @@ export function ItemForm({
           error?: string;
         };
       } catch {
-        setError(tx.errorUploadParse);
+        setError("이미지 보존에 실패했습니다. 잠시 후 다시 시도해주세요.");
         return;
       }
 
       if (!uploadResponse.ok || !uploadResult.url) {
-        setError(uploadResult.error ?? tx.errorUploadFailed);
+        setError(uploadResult.error ?? "이미지 보존에 실패했습니다.");
         return;
       }
 
@@ -159,7 +155,7 @@ export function ItemForm({
       });
 
       if (!result.ok) {
-        setError(result.error ?? tx.errorCreateFailed);
+        setError(result.error ?? "기록을 저장하지 못했습니다.");
         return;
       }
 
@@ -173,8 +169,7 @@ export function ItemForm({
         <div className="space-y-2">
           <Label htmlFor="name" className="text-stone-800">
             <span className="mr-2 font-mono text-xs text-stone-400">01.</span>
-            {tx.field1Label}{" "}
-            <span className="text-xs text-stone-400">{tx.field1Required}</span>
+            물건 이름 <span className="text-xs text-stone-400">필수</span>
           </Label>
           <Input
             id="name"
@@ -184,7 +179,7 @@ export function ItemForm({
               setDuplicate(null);
             }}
             onBlur={() => void checkDuplicate()}
-            placeholder={tx.field1Placeholder}
+            placeholder="예: 모나미 153 볼펜, 노란색 맥심 로고 에디션"
             className="rounded-none border-x-0 border-t-0 border-b-stone-300 bg-transparent px-0 text-stone-900 placeholder:text-stone-400 focus-visible:border-stone-800 focus-visible:ring-0"
             required
           />
@@ -192,14 +187,14 @@ export function ItemForm({
             <div className="border border-stone-300 bg-[#F4F1EA]/80 p-3 text-sm leading-6">
               <p className="flex items-start gap-2 font-semibold text-stone-700">
                 <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
-                {tx.duplicateTitle}
+                이미 보존된 기록일 수 있어요.
               </p>
               <p className="mt-1 text-stone-500">
                 <Link href={`/items/${duplicate.item.id}`} className="font-semibold underline">
                   {duplicate.item.name}
                 </Link>
-                {lang === "ko" ? "" : " "}
-                {tx.duplicateDesc}
+                이 먼저 보존되어 있습니다. 다른 시기나 다른 모습의 물건이라면 새
+                소장 기록으로 남길 수 있습니다.
               </p>
             </div>
           ) : null}
@@ -208,8 +203,7 @@ export function ItemForm({
         <div className="space-y-2">
           <Label htmlFor="image" className="text-stone-800">
             <span className="mr-2 font-mono text-xs text-stone-400">02.</span>
-            {tx.field2Label}{" "}
-            <span className="text-xs text-stone-400">{tx.field2Required}</span>
+            식별 이미지 <span className="text-xs text-stone-400">필수</span>
           </Label>
           <label
             htmlFor="image"
@@ -218,11 +212,11 @@ export function ItemForm({
             {previewUrl ? (
               <div className="w-full space-y-3">
                 <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-stone-400">
-                  [ {tx.field2ImageLabel} ]
+                  [ REGISTER IMAGE SPECIMEN ]
                 </p>
                 <img
                   src={previewUrl}
-                  alt={tx.selectedImageAlt}
+                  alt="선택한 대표 이미지"
                   className="mx-auto max-h-80 w-full border border-stone-200 bg-white object-contain p-2 shadow-sm"
                 />
               </div>
@@ -232,16 +226,16 @@ export function ItemForm({
                   <ImagePlus className="h-5 w-5" aria-hidden="true" />
                 </span>
                 <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-stone-400">
-                  [ {tx.field2ImageLabel} ]
+                  [ REGISTER IMAGE SPECIMEN ]
                 </span>
                 <span className="text-sm font-semibold text-stone-700">
-                  {tx.field2ImageTitle}
+                  표본 이미지를 선택하세요
                 </span>
                 <span className="max-w-sm text-xs leading-5 text-stone-500">
-                  {tx.field2ImageDesc}
+                  대상의 형태를 식별할 수 있는 이미지를 등록하십시오.
                 </span>
                 <span className="text-xs text-stone-400">
-                  {tx.field2ImageFormats}
+                  jpg, jpeg, png, webp / 최대 5MB
                 </span>
               </>
             )}
@@ -259,14 +253,13 @@ export function ItemForm({
         <div className="space-y-2">
           <Label htmlFor="description" className="text-stone-800">
             <span className="mr-2 font-mono text-xs text-stone-400">03.</span>
-            {tx.field3Label}{" "}
-            <span className="text-xs text-stone-400">{tx.field3Required}</span>
+            기록 해설 <span className="text-xs text-stone-400">필수</span>
           </Label>
           <Textarea
             id="description"
             value={description}
             onChange={(event) => setDescription(event.target.value)}
-            placeholder={tx.field3Placeholder}
+            placeholder="이 물건의 형태적 특징, 사용 목적, 또는 미래 인류학적 관점에서의 추정 용도를 서술하십시오. 예: 플라스틱 원통형 몸체 내부에 검은 필기용 액체가 내장된 도구. 주로 21세기 종이 매체에 기호를 기록하기 위해 사용됨."
             maxLength={160}
             className="min-h-28 rounded-none border-x-0 border-t-0 border-b-stone-300 bg-transparent px-0 text-stone-900 placeholder:text-stone-400 focus-visible:border-stone-800 focus-visible:ring-0"
             required
@@ -287,14 +280,13 @@ export function ItemForm({
           <div className="space-y-2">
             <Label htmlFor="brand" className="text-stone-800">
               <span className="mr-2 font-mono text-xs text-stone-400">05.</span>
-              {tx.field5Label}{" "}
-              <span className="text-xs text-stone-400">{tx.optional}</span>
+              브랜드/제조사 <span className="text-xs text-stone-400">선택</span>
             </Label>
             <Input
               id="brand"
               value={brand}
               onChange={(event) => setBrand(event.target.value)}
-              placeholder={tx.field5Placeholder}
+              placeholder="예: 주식회사 모나미 (Monami Co., Ltd.)"
               className="rounded-none border-x-0 border-t-0 border-b-stone-300 bg-transparent px-0 text-stone-900 placeholder:text-stone-400 focus-visible:border-stone-800 focus-visible:ring-0"
             />
           </div>
@@ -316,7 +308,7 @@ export function ItemForm({
         {isPending ? (
           <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
         ) : null}
-        {isPending ? tx.submitLoading : tx.submitButton}
+        {isPending ? "기록 보존 처리 중..." : "기초 기록 등록"}
       </Button>
     </form>
   );

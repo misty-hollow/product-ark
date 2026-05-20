@@ -6,8 +6,6 @@ import { SearchBar } from "@/components/search-bar";
 import { SpecimenImage } from "@/components/specimen-image";
 import { VaultStatusLog } from "@/components/vault-status-log";
 import { formatArchiveNumber, formatKoreanDate } from "@/lib/format";
-import { useLang } from "@/lib/i18n/context";
-import { t } from "@/lib/i18n/translations";
 
 export type HomeRecentItem = {
   id: string;
@@ -29,27 +27,12 @@ function displayCount(value: number) {
   return value === 0 ? "—" : value.toLocaleString("ko-KR");
 }
 
-function renderHeroTitle(title: string) {
-  const lines = title.split("\n");
-
-  return lines.map((line, index) => (
-    <span key={`${line}-${index}`}>
-      {index === lines.length - 1 ? <span className="italic">{line}</span> : line}
-      {index < lines.length - 1 ? <br /> : null}
-    </span>
-  ));
-}
-
 function RecentArchiveCard({
   item,
-  index,
-  recentIndex,
-  recentMemory
+  index
 }: {
   item: HomeRecentItem;
   index: number;
-  recentIndex: string;
-  recentMemory: string;
 }) {
   const createdAt = new Date(item.createdAt);
   const archiveNumber = formatArchiveNumber(createdAt, item.id);
@@ -62,7 +45,7 @@ function RecentArchiveCard({
       <div className="flex h-9 items-center justify-between bg-[var(--bg-inset)] px-4 font-mono text-[10px] uppercase tracking-widest text-[var(--ink-muted)]">
         <span>{archiveNumber}</span>
         <span>
-          {recentIndex} #{String(index + 1).padStart(3, "0")}
+          색인 #{String(index + 1).padStart(3, "0")}
         </span>
       </div>
       <div className="grid gap-0 sm:grid-cols-[142px_1fr]">
@@ -76,7 +59,7 @@ function RecentArchiveCard({
           <span className="pointer-events-none absolute left-3 top-8 font-display text-[60px] leading-none text-[var(--accent-signal)] opacity-15">
             "
           </span>
-          <p className="font-display text-xl italic text-[var(--ink-primary)]">
+          <p className="font-display text-[var(--text-lg)] font-medium tracking-[-0.02em] text-[var(--ink-primary)]">
             {item.name}
           </p>
           <p className="mt-4 line-clamp-4 font-mono text-[13px] font-light leading-[1.8] text-[var(--ink-secondary)]">
@@ -89,9 +72,7 @@ function RecentArchiveCard({
             <span className="mx-2">·</span>
             <span>{formatKoreanDate(createdAt)}</span>
             <span className="mx-2">·</span>
-            <span>
-              {recentMemory} {item.memoryCount}
-            </span>
+            <span>기억 {item.memoryCount}</span>
           </div>
         </div>
       </div>
@@ -106,49 +87,53 @@ export function HomePageClient({
   recentItems: HomeRecentItem[];
   stats: HomeStats;
 }) {
-  const { lang } = useLang();
-  const tx = t[lang];
   const statItems = [
     {
       index: "01 /",
-      label: tx.totalRecords,
+      label: "총 소장 기록",
       code: "TOTAL RECORDS",
       value: stats.itemCount,
-      unit: tx.statUnit1,
+      unit: "건",
       href: "/search"
     },
     {
       index: "02 /",
-      label: tx.firstKeepers,
+      label: "최초 등록자 수",
       code: "FIRST KEEPERS",
       value: stats.firstRecorderCount,
-      unit: tx.statUnit2,
+      unit: "명",
       href: "/search"
     },
     {
       index: "03 /",
-      label: tx.memoryLedger,
+      label: "누적 기억 기록",
       code: "MEMORY LEDGER",
       value: stats.memoryCount,
-      unit: tx.statUnit3,
+      unit: "증언",
       href: "/search"
     }
   ];
 
   return (
     <div className="bg-[var(--bg-base)] text-[var(--ink-primary)]">
-      <section className="relative overflow-hidden border-b border-[var(--border-fine)]">
-        <div className="archive-container animate-in py-20 md:py-28">
+      <section className="hero relative overflow-hidden border-b border-[var(--border-fine)]">
+        <div className="archive-container animate-in w-full">
           <div className="max-w-4xl">
             <div className="inline-flex items-center gap-3 border-b border-[var(--border-medium)] pb-2 font-mono text-[10px] uppercase tracking-widest text-[var(--ink-muted)]">
               <span className="h-2 w-2 bg-[var(--accent-signal)]" />
-              [{tx.badge}]
+              [OPEN OBJECT REGISTRY]
             </div>
-            <h1 className="mt-8 max-w-4xl whitespace-pre-line font-display text-[36px] leading-[0.98] tracking-[-0.02em] text-[var(--ink-primary)] sm:text-[44px] lg:text-[56px]">
-              {renderHeroTitle(tx.heroTitle)}
+            <h1 className="mt-8 max-w-5xl font-display text-[var(--text-hero)] font-black leading-none tracking-[-0.04em] text-[var(--ink-primary)]">
+              <span className="font-black">오늘의 평범한 물건도</span>
+              <br />
+              <span className="font-black">시간이 지나면</span>
+              <br />
+              <span className="font-light tracking-tight">한 시대의 흔적이 됩니다.</span>
             </h1>
-            <p className="mt-7 max-w-2xl font-mono text-[15px] font-light leading-8 text-[var(--ink-secondary)]">
-              {tx.heroDesc}
+            <p className="mt-8 max-w-3xl text-[var(--text-base)] font-light leading-[1.9] text-[var(--ink-secondary)]">
+              지구물건보관소는 지금 실존하는 사물의 이름, 형태적 특징, 그리고
+              사람들의 일상적 기록 해설을 수집하여 영구 보존하는 열린 아카이브
+              플랫폼입니다.
             </p>
 
             <div className="mt-9 max-w-2xl">
@@ -156,21 +141,21 @@ export function HomePageClient({
                 className="flex-col gap-3 sm:flex-row"
                 inputClassName="h-12 rounded-none border-[var(--border-medium)] bg-white/70 font-mono text-sm text-[var(--ink-primary)] focus-visible:ring-[var(--ink-muted)]"
                 buttonClassName="btn-primary h-12 rounded-none bg-[var(--ink-primary)] px-7 font-mono text-xs uppercase tracking-widest text-[var(--bg-base)] hover:bg-[var(--ink-primary)]"
-                placeholder={tx.searchPlaceholder}
-                buttonText={tx.searchButton}
+                placeholder="식별 번호, 물건 명칭, 또는 기록 해설로 조회..."
+                buttonText="조회"
               />
               <div className="mt-5 flex flex-col gap-4 sm:flex-row">
                 <Link
                   href="/items/new"
                   className="btn-primary inline-flex min-h-11 items-center justify-center bg-[var(--ink-primary)] px-6 font-mono text-xs uppercase tracking-widest text-[var(--bg-base)]"
                 >
-                  <span>{tx.heroCta1}</span>
+                  <span>기초 기록 수립하기</span>
                 </Link>
                 <Link
                   href="/search"
                   className="inline-flex min-h-11 items-center justify-center border border-[var(--border-medium)] px-6 font-mono text-xs uppercase tracking-widest text-[var(--ink-secondary)] transition hover:border-[var(--accent-signal)] hover:text-[var(--accent-signal)]"
                 >
-                  {tx.heroCta2}
+                  최근 기록 살펴보기 →
                 </Link>
               </div>
             </div>
@@ -218,31 +203,31 @@ export function HomePageClient({
                 href={stat.href}
                 className="mt-6 inline-flex font-mono text-[10px] uppercase tracking-widest text-[var(--ink-muted)] transition hover:text-[var(--accent-signal)]"
               >
-                {tx.viewAll}
+                전체 조회 →
               </Link>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="archive-container animate-in delay-3 py-20 md:py-32">
+      <section className="archive-container section-spacious animate-in delay-3">
         <div className="mb-9 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div className="border-l-[3px] border-[var(--accent-signal)] pl-5">
             <p className="font-mono text-[10px] uppercase tracking-widest text-[var(--ink-muted)]">
               Recently Accessioned Objects
             </p>
-            <h2 className="mt-2 font-display text-3xl text-[var(--ink-primary)]">
-              {tx.recentTitle}
+            <h2 className="mt-2 font-display text-[var(--text-2xl)] font-semibold text-[var(--ink-primary)]">
+              최근 소장품에 보태진 기록들
             </h2>
-            <p className="mt-3 max-w-2xl font-mono text-sm font-light leading-7 text-[var(--ink-secondary)]">
-              {tx.recentDesc}
+            <p className="mt-4 max-w-2xl text-[var(--text-base)] font-light leading-[1.9] text-[var(--ink-secondary)]">
+              공개 기록물 아래에 채워진 개별 주관적 역사입니다.
             </p>
           </div>
           <Link
             href="/search"
             className="font-mono text-xs uppercase tracking-widest text-[var(--ink-secondary)] transition hover:text-[var(--accent-signal)]"
           >
-            {tx.recentViewAll}
+            소장 기록 전체 →
           </Link>
         </div>
 
@@ -252,8 +237,6 @@ export function HomePageClient({
               key={item.id}
               item={item}
               index={index}
-              recentIndex={tx.recentIndex}
-              recentMemory={tx.recentMemory}
             />
           ))}
         </div>
@@ -280,19 +263,21 @@ export function HomePageClient({
           </p>
           <div className="relative max-w-3xl md:pl-12">
             <p className="font-mono text-[10px] uppercase tracking-widest text-[var(--accent-signal)]">
-              {tx.ctaLabel}
+              ACQUISITION CODE OF CONDUCT
             </p>
-            <h2 className="mt-4 font-display text-4xl leading-tight text-[var(--bg-base)]">
-              {tx.ctaTitle}
+            <h2 className="mt-4 font-display text-[var(--text-2xl)] font-semibold leading-tight text-[var(--bg-base)]">
+              보편적 사물의 기초 서식
             </h2>
-            <p className="mt-5 max-w-2xl font-mono text-sm font-light leading-8 text-[rgba(247,245,239,0.65)]">
-              {tx.ctaDesc}
+            <p className="mt-5 max-w-2xl text-[var(--text-base)] font-light leading-[1.9] text-[rgba(247,245,239,0.65)]">
+              어제 먹은 가공 음료의 빈 병, 책상 구석에 방치된 오래된 볼펜,
+              서랍 속 잠자던 아날로그 스마트폰까지. 우리 시대의 평범한 문화
+              유산을 소장품 기록지로 영원히 박제할 수 있는 권한을 제공합니다.
             </p>
             <Link
               href="/items/new"
               className="mt-8 inline-flex min-h-11 items-center justify-center bg-[var(--accent-signal)] px-7 font-mono text-xs uppercase tracking-widest text-white transition hover:bg-[#d75b40]"
             >
-              {tx.ctaButton}
+              신규 기초 소장 서식 수립
             </Link>
           </div>
         </div>
