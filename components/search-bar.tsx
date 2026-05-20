@@ -9,13 +9,17 @@ type SearchBarProps = {
   className?: string;
   inputClassName?: string;
   buttonClassName?: string;
+  placeholder?: string;
+  buttonText?: string;
 };
 
 export function SearchBar({
   defaultQuery = "",
   className,
   inputClassName,
-  buttonClassName
+  buttonClassName,
+  placeholder = "식별 번호, 물건 명칭, 또는 기록 해설로 조회...",
+  buttonText = "조회"
 }: SearchBarProps) {
   return (
     <form action="/search" className={cn("flex w-full gap-2", className)}>
@@ -27,7 +31,7 @@ export function SearchBar({
         <Input
           name="q"
           defaultValue={defaultQuery}
-          placeholder="식별 번호, 물건 명칭, 또는 기록 해설로 조회..."
+          placeholder={placeholder}
         className={cn(
             "h-11 border-stone-300 bg-white/80 pl-9 text-stone-800 placeholder:text-stone-400 focus-visible:ring-stone-400",
             inputClassName
@@ -42,7 +46,7 @@ export function SearchBar({
           buttonClassName
         )}
       >
-        <span>조회</span>
+        <span>{buttonText}</span>
       </Button>
     </form>
   );

@@ -1,11 +1,18 @@
+"use client";
+
 import { Plus, Search } from "lucide-react";
 import Link from "next/link";
 import { SignInButton, SignUpButton, SignedIn, SignedOut } from "@clerk/nextjs";
 
 import { UserNav } from "@/components/user-nav";
 import { Button } from "@/components/ui/button";
+import { useLang } from "@/lib/i18n/context";
+import { t } from "@/lib/i18n/translations";
 
 export function Header() {
+  const { lang, toggle } = useLang();
+  const tx = t[lang];
+
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--border-fine)] bg-[var(--bg-base)]/88 shadow-[0_8px_28px_rgba(26,26,24,0.035)] backdrop-blur-xl">
       <div className="archive-container flex h-[72px] items-center justify-between gap-3">
@@ -24,10 +31,10 @@ export function Header() {
           </span>
           <span className="min-w-0">
             <span className="block truncate font-display text-xl italic tracking-normal text-[var(--ink-primary)]">
-              지구물건보관소
+              {tx.siteName}
             </span>
             <span className="block truncate font-mono text-[9px] uppercase tracking-widest text-[var(--ink-muted)]">
-              Earth Object Archive
+              {tx.siteNameSub}
             </span>
           </span>
         </Link>
@@ -41,9 +48,16 @@ export function Header() {
           >
             <Link href="/search">
               <Search className="mr-2 h-4 w-4" aria-hidden="true" />
-              소장 기록 조회
+              {tx.navSearch}
             </Link>
           </Button>
+          <button
+            type="button"
+            onClick={toggle}
+            className="min-h-9 border border-stone-300 px-3 py-1.5 font-mono text-[10px] tracking-widest text-stone-500 transition-all hover:border-stone-600 hover:text-stone-900"
+          >
+            {lang === "ko" ? "EN" : "KO"}
+          </button>
           <Button
             asChild
             size="sm"
@@ -51,7 +65,7 @@ export function Header() {
           >
             <Link href="/items/new">
               <Plus className="mr-2 h-4 w-4" aria-hidden="true" />
-              <span>신규 기록 생성</span>
+              <span>{tx.navNew.replace("+ ", "")}</span>
             </Link>
           </Button>
           <SignedOut>
@@ -62,7 +76,7 @@ export function Header() {
                   size="sm"
                   className="hidden rounded-none border-[var(--border-medium)] bg-transparent font-mono text-[11px] text-[var(--ink-secondary)] hover:bg-[var(--bg-surface)] sm:inline-flex"
                 >
-                  로그인
+                  {tx.signIn}
                 </Button>
               </SignInButton>
               <SignUpButton mode="modal">
@@ -71,7 +85,7 @@ export function Header() {
                   size="sm"
                   className="hidden rounded-none bg-[var(--bg-surface)] font-mono text-[11px] text-[var(--ink-primary)] hover:bg-[var(--bg-inset)] sm:inline-flex"
                 >
-                  시작하기
+                  {tx.signUp}
                 </Button>
               </SignUpButton>
             </div>

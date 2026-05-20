@@ -1,0 +1,302 @@
+"use client";
+
+import Link from "next/link";
+
+import { SearchBar } from "@/components/search-bar";
+import { SpecimenImage } from "@/components/specimen-image";
+import { VaultStatusLog } from "@/components/vault-status-log";
+import { formatArchiveNumber, formatKoreanDate } from "@/lib/format";
+import { useLang } from "@/lib/i18n/context";
+import { t } from "@/lib/i18n/translations";
+
+export type HomeRecentItem = {
+  id: string;
+  name: string;
+  description: string;
+  imageUrl: string;
+  createdAt: string;
+  firstRecorderName: string;
+  memoryCount: number;
+};
+
+export type HomeStats = {
+  itemCount: number;
+  firstRecorderCount: number;
+  memoryCount: number;
+};
+
+function displayCount(value: number) {
+  return value === 0 ? "—" : value.toLocaleString("ko-KR");
+}
+
+function renderHeroTitle(title: string) {
+  const lines = title.split("\n");
+
+  return lines.map((line, index) => (
+    <span key={`${line}-${index}`}>
+      {index === lines.length - 1 ? <span className="italic">{line}</span> : line}
+      {index < lines.length - 1 ? <br /> : null}
+    </span>
+  ));
+}
+
+function RecentArchiveCard({
+  item,
+  index,
+  recentIndex,
+  recentMemory
+}: {
+  item: HomeRecentItem;
+  index: number;
+  recentIndex: string;
+  recentMemory: string;
+}) {
+  const createdAt = new Date(item.createdAt);
+  const archiveNumber = formatArchiveNumber(createdAt, item.id);
+
+  return (
+    <Link
+      href={`/items/${item.id}`}
+      className="memory-card group block overflow-hidden border border-[var(--border-fine)] bg-white"
+    >
+      <div className="flex h-9 items-center justify-between bg-[var(--bg-inset)] px-4 font-mono text-[10px] uppercase tracking-widest text-[var(--ink-muted)]">
+        <span>{archiveNumber}</span>
+        <span>
+          {recentIndex} #{String(index + 1).padStart(3, "0")}
+        </span>
+      </div>
+      <div className="grid gap-0 sm:grid-cols-[142px_1fr]">
+        <SpecimenImage
+          src={item.imageUrl}
+          alt={item.name}
+          className="aspect-[4/3] border-b border-[var(--border-fine)] sm:h-full sm:border-b-0 sm:border-r"
+          imageClassName="transition duration-300 group-hover:scale-[1.025]"
+        />
+        <div className="relative min-h-52 p-5">
+          <span className="pointer-events-none absolute left-3 top-8 font-display text-[60px] leading-none text-[var(--accent-signal)] opacity-15">
+            "
+          </span>
+          <p className="font-display text-xl italic text-[var(--ink-primary)]">
+            {item.name}
+          </p>
+          <p className="mt-4 line-clamp-4 font-mono text-[13px] font-light leading-[1.8] text-[var(--ink-secondary)]">
+            {item.description}
+          </p>
+          <div className="mt-5 border-t border-dashed border-[var(--border-fine)] pt-4 font-mono text-[10px] uppercase tracking-wider text-[var(--ink-muted)]">
+            <span className="font-medium text-[var(--ink-primary)]">
+              {item.firstRecorderName}
+            </span>
+            <span className="mx-2">·</span>
+            <span>{formatKoreanDate(createdAt)}</span>
+            <span className="mx-2">·</span>
+            <span>
+              {recentMemory} {item.memoryCount}
+            </span>
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+export function HomePageClient({
+  recentItems,
+  stats
+}: {
+  recentItems: HomeRecentItem[];
+  stats: HomeStats;
+}) {
+  const { lang } = useLang();
+  const tx = t[lang];
+  const statItems = [
+    {
+      index: "01 /",
+      label: tx.totalRecords,
+      code: "TOTAL RECORDS",
+      value: stats.itemCount,
+      unit: tx.statUnit1,
+      href: "/search"
+    },
+    {
+      index: "02 /",
+      label: tx.firstKeepers,
+      code: "FIRST KEEPERS",
+      value: stats.firstRecorderCount,
+      unit: tx.statUnit2,
+      href: "/search"
+    },
+    {
+      index: "03 /",
+      label: tx.memoryLedger,
+      code: "MEMORY LEDGER",
+      value: stats.memoryCount,
+      unit: tx.statUnit3,
+      href: "/search"
+    }
+  ];
+
+  return (
+    <div className="bg-[var(--bg-base)] text-[var(--ink-primary)]">
+      <section className="relative overflow-hidden border-b border-[var(--border-fine)]">
+        <div className="archive-container animate-in py-20 md:py-28">
+          <div className="max-w-4xl">
+            <div className="inline-flex items-center gap-3 border-b border-[var(--border-medium)] pb-2 font-mono text-[10px] uppercase tracking-widest text-[var(--ink-muted)]">
+              <span className="h-2 w-2 bg-[var(--accent-signal)]" />
+              [{tx.badge}]
+            </div>
+            <h1 className="mt-8 max-w-4xl whitespace-pre-line font-display text-[36px] leading-[0.98] tracking-[-0.02em] text-[var(--ink-primary)] sm:text-[44px] lg:text-[56px]">
+              {renderHeroTitle(tx.heroTitle)}
+            </h1>
+            <p className="mt-7 max-w-2xl font-mono text-[15px] font-light leading-8 text-[var(--ink-secondary)]">
+              {tx.heroDesc}
+            </p>
+
+            <div className="mt-9 max-w-2xl">
+              <SearchBar
+                className="flex-col gap-3 sm:flex-row"
+                inputClassName="h-12 rounded-none border-[var(--border-medium)] bg-white/70 font-mono text-sm text-[var(--ink-primary)] focus-visible:ring-[var(--ink-muted)]"
+                buttonClassName="btn-primary h-12 rounded-none bg-[var(--ink-primary)] px-7 font-mono text-xs uppercase tracking-widest text-[var(--bg-base)] hover:bg-[var(--ink-primary)]"
+                placeholder={tx.searchPlaceholder}
+                buttonText={tx.searchButton}
+              />
+              <div className="mt-5 flex flex-col gap-4 sm:flex-row">
+                <Link
+                  href="/items/new"
+                  className="btn-primary inline-flex min-h-11 items-center justify-center bg-[var(--ink-primary)] px-6 font-mono text-xs uppercase tracking-widest text-[var(--bg-base)]"
+                >
+                  <span>{tx.heroCta1}</span>
+                </Link>
+                <Link
+                  href="/search"
+                  className="inline-flex min-h-11 items-center justify-center border border-[var(--border-medium)] px-6 font-mono text-xs uppercase tracking-widest text-[var(--ink-secondary)] transition hover:border-[var(--accent-signal)] hover:text-[var(--accent-signal)]"
+                >
+                  {tx.heroCta2}
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          <div className="pointer-events-none absolute bottom-8 right-[-1.5rem] rotate-45 font-mono text-5xl uppercase leading-none tracking-widest text-[var(--ink-primary)] opacity-[0.06] md:right-16 md:text-7xl">
+            Specimen
+            <br />
+            EST.2026
+            <br />
+            ARK-∞
+          </div>
+        </div>
+
+        <div className="archive-container animate-in delay-1 pb-12">
+          <VaultStatusLog />
+        </div>
+      </section>
+
+      <section className="animate-in delay-2 border-y border-[var(--border-fine)] bg-[var(--bg-surface)]">
+        <div className="archive-container grid py-14 sm:grid-cols-3">
+          {statItems.map((stat) => (
+            <div
+              key={stat.label}
+              className="border-t border-[var(--border-fine)] py-8 sm:border-t-0 sm:px-8 sm:py-4 sm:[&:not(:first-child)]:border-l"
+            >
+              <p className="font-mono text-xs font-medium text-[var(--accent-signal)]">
+                {stat.index}
+              </p>
+              <p className="mt-4 font-mono text-[9px] uppercase tracking-widest text-[var(--ink-muted)]">
+                {stat.code}
+              </p>
+              <div className="mt-2 flex items-end gap-2">
+                <span className="font-display text-[64px] leading-none tracking-[-0.03em] text-[var(--ink-primary)]">
+                  {displayCount(stat.value)}
+                </span>
+                {stat.value > 0 && stat.unit ? (
+                  <span className="pb-2 font-mono text-xs uppercase tracking-widest text-[var(--ink-muted)]">
+                    {stat.unit}
+                  </span>
+                ) : null}
+              </div>
+              <p className="mt-4 text-sm text-[var(--ink-secondary)]">{stat.label}</p>
+              <Link
+                href={stat.href}
+                className="mt-6 inline-flex font-mono text-[10px] uppercase tracking-widest text-[var(--ink-muted)] transition hover:text-[var(--accent-signal)]"
+              >
+                {tx.viewAll}
+              </Link>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="archive-container animate-in delay-3 py-20 md:py-32">
+        <div className="mb-9 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+          <div className="border-l-[3px] border-[var(--accent-signal)] pl-5">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-[var(--ink-muted)]">
+              Recently Accessioned Objects
+            </p>
+            <h2 className="mt-2 font-display text-3xl text-[var(--ink-primary)]">
+              {tx.recentTitle}
+            </h2>
+            <p className="mt-3 max-w-2xl font-mono text-sm font-light leading-7 text-[var(--ink-secondary)]">
+              {tx.recentDesc}
+            </p>
+          </div>
+          <Link
+            href="/search"
+            className="font-mono text-xs uppercase tracking-widest text-[var(--ink-secondary)] transition hover:text-[var(--accent-signal)]"
+          >
+            {tx.recentViewAll}
+          </Link>
+        </div>
+
+        <div className="grid gap-6 [grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr))]">
+          {recentItems.map((item, index) => (
+            <RecentArchiveCard
+              key={item.id}
+              item={item}
+              index={index}
+              recentIndex={tx.recentIndex}
+              recentMemory={tx.recentMemory}
+            />
+          ))}
+        </div>
+      </section>
+
+      <section className="archive-container pb-20 md:pb-32">
+        <div className="relative overflow-hidden bg-[var(--ink-primary)] px-6 py-12 text-[var(--bg-base)] md:px-12 md:py-16">
+          <div className="pointer-events-none absolute -right-16 -top-20 h-80 w-80 opacity-[0.05]">
+            <svg viewBox="0 0 320 320" fill="none" aria-hidden="true">
+              {[44, 78, 112, 146].map((radius) => (
+                <circle
+                  key={radius}
+                  cx="160"
+                  cy="160"
+                  r={radius}
+                  stroke="currentColor"
+                  strokeWidth="1"
+                />
+              ))}
+            </svg>
+          </div>
+          <p className="absolute left-4 top-1/2 hidden -translate-y-1/2 -rotate-90 font-mono text-[10px] uppercase tracking-[0.5em] text-[var(--bg-base)] opacity-10 md:block">
+            A·R·K·I·V
+          </p>
+          <div className="relative max-w-3xl md:pl-12">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-[var(--accent-signal)]">
+              {tx.ctaLabel}
+            </p>
+            <h2 className="mt-4 font-display text-4xl leading-tight text-[var(--bg-base)]">
+              {tx.ctaTitle}
+            </h2>
+            <p className="mt-5 max-w-2xl font-mono text-sm font-light leading-8 text-[rgba(247,245,239,0.65)]">
+              {tx.ctaDesc}
+            </p>
+            <Link
+              href="/items/new"
+              className="mt-8 inline-flex min-h-11 items-center justify-center bg-[var(--accent-signal)] px-7 font-mono text-xs uppercase tracking-widest text-white transition hover:bg-[#d75b40]"
+            >
+              {tx.ctaButton}
+            </Link>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
