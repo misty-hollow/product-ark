@@ -9,7 +9,20 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        display: ["DM Serif Display", "serif"],
+        mono: ["DM Mono", "monospace"]
+      },
       colors: {
+        archive: {
+          base: "var(--bg-base)",
+          surface: "var(--bg-surface)",
+          inset: "var(--bg-inset)",
+          ink: "var(--ink-primary)",
+          muted: "var(--ink-muted)",
+          signal: "var(--accent-signal)",
+          active: "var(--accent-active)"
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

@@ -1,243 +1,254 @@
-import Link from 'next/link';
+import Link from "next/link";
 
-export default function HomePage() {
-  // 모듈러 데이터 (실제 DB 데이터와 연동 시 대체 가능)
-  const systemStats = {
-    totalRecords: "0",
-    firstKeepers: "0",
-    memoryLedger: "0",
-  };
+import { SearchBar } from "@/components/search-bar";
+import { SpecimenImage } from "@/components/specimen-image";
+import { VaultStatusLog } from "@/components/vault-status-log";
+import { formatArchiveNumber, formatKoreanDate } from "@/lib/format";
+import { getArchiveStats, getRecentItems } from "@/lib/items";
 
-  const recentMemories = [
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
+type RecentItem = Awaited<ReturnType<typeof getRecentItems>>[number];
+
+function displayCount(value: number) {
+  return value === 0 ? "—" : value.toLocaleString("ko-KR");
+}
+
+function RecentArchiveCard({ item, index }: { item: RecentItem; index: number }) {
+  const archiveNumber = formatArchiveNumber(item.createdAt, item.id);
+
+  return (
+    <Link
+      href={`/items/${item.id}`}
+      className="memory-card group block overflow-hidden border border-[var(--border-fine)] bg-white"
+    >
+      <div className="flex h-9 items-center justify-between bg-[var(--bg-inset)] px-4 font-mono text-[10px] uppercase tracking-widest text-[var(--ink-muted)]">
+        <span>{archiveNumber}</span>
+        <span>INDEX #{String(index + 1).padStart(3, "0")}</span>
+      </div>
+      <div className="grid gap-0 sm:grid-cols-[142px_1fr]">
+        <SpecimenImage
+          src={item.imageUrl}
+          alt={item.name}
+          className="aspect-[4/3] border-b border-[var(--border-fine)] sm:h-full sm:border-b-0 sm:border-r"
+          imageClassName="transition duration-300 group-hover:scale-[1.025]"
+        />
+        <div className="relative min-h-52 p-5">
+          <span className="pointer-events-none absolute left-3 top-8 font-display text-[60px] leading-none text-[var(--accent-signal)] opacity-15">
+            "
+          </span>
+          <p className="font-display text-xl italic text-[var(--ink-primary)]">
+            {item.name}
+          </p>
+          <p className="mt-4 line-clamp-4 font-mono text-[13px] font-light leading-[1.8] text-[var(--ink-secondary)]">
+            {item.description}
+          </p>
+          <div className="mt-5 border-t border-dashed border-[var(--border-fine)] pt-4 font-mono text-[10px] uppercase tracking-wider text-[var(--ink-muted)]">
+            <span className="font-medium text-[var(--ink-primary)]">
+              {item.firstRecorder.name}
+            </span>
+            <span className="mx-2">·</span>
+            <span>{formatKoreanDate(item.createdAt)}</span>
+            <span className="mx-2">·</span>
+            <span>Memory {item._count?.memories ?? 0}</span>
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+export default async function HomePage() {
+  const [recentItems, stats] = await Promise.all([getRecentItems(6), getArchiveStats()]);
+  const statItems = [
     {
-      id: "1",
-      itemTitle: "크라운산도 딸기맛",
-      content: "외할머니 댁 안방 자개장 깊은 곳에서 항상 꺼내주시던 붉은색 상자의 과자. 특유의 달콤하고 텁텁한 딸기 크림 냄새가 아직도 생생합니다.",
-      author: "기록인 김주형",
-      date: "2026.05.12",
-      specimenId: "ARK-0102-0012"
+      index: "01 /",
+      label: "총 소장 기록",
+      code: "TOTAL RECORDS",
+      value: stats.itemCount,
+      unit: "건",
+      href: "/search"
     },
     {
-      id: "2",
-      itemTitle: "모나미 153 볼펜 (노란색)",
-      content: "아버지가 일기 쓰실 때 쓰시던 볼펜인데, 끝부분을 딱딱 누르는 소리가 밤새 들리곤 했습니다. 그 소리가 그립네요.",
-      author: "기록인 이민재",
-      date: "2026.05.11",
-      specimenId: "ARK-0304-0048"
+      index: "02 /",
+      label: "최초 등록자 수",
+      code: "FIRST KEEPERS",
+      value: stats.firstRecorderCount,
+      unit: "명",
+      href: "/search"
+    },
+    {
+      index: "03 /",
+      label: "누적 기억 기록",
+      code: "MEMORY LEDGER",
+      value: stats.memoryCount,
+      unit: "증언",
+      href: "/search"
     }
   ];
 
   return (
-    <div className="relative min-h-screen bg-[#FAF9F5] text-stone-900 selection:bg-stone-200 font-sans antialiased overflow-x-hidden">
-      
-      {/* 얇고 아날로그한 방안지(Grid) 배경 스타일 */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none" />
+    <div className="bg-[var(--bg-base)] text-[var(--ink-primary)]">
+      <section className="relative overflow-hidden border-b border-[var(--border-fine)]">
+        <div className="archive-container animate-in py-20 md:py-28">
+          <div className="max-w-4xl">
+            <div className="inline-flex items-center gap-3 border-b border-[var(--border-medium)] pb-2 font-mono text-[10px] uppercase tracking-widest text-[var(--ink-muted)]">
+              <span className="h-2 w-2 bg-[var(--accent-signal)]" />
+              [OPEN OBJECT REGISTRY]
+            </div>
+            <h1 className="mt-8 max-w-4xl font-display text-[36px] leading-[0.98] tracking-[-0.02em] text-[var(--ink-primary)] sm:text-[44px] lg:text-[56px]">
+              오늘의 평범한 물건도
+              <br />
+              <span className="italic">한 시대의 흔적</span>이 됩니다.
+            </h1>
+            <p className="mt-7 max-w-2xl font-mono text-[15px] font-light leading-8 text-[var(--ink-secondary)]">
+              지구물건보관소는 지금 존재하는 물건의 이름, 모습, 해설을 기록하여
+              보존하는 오픈 아카이브입니다. 아주 평범한 사물도 지나고 나면 대체로
+              자료가 된다.
+            </p>
 
-      {/* 헤더 네비게이션 영역 */}
-      <header className="relative border-b border-stone-200 bg-[#FAF9F5]/90 backdrop-blur-sm z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex flex-col">
-            <span className="text-sm font-bold tracking-tight text-stone-900">지구물건보관소</span>
-            <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-stone-400">EARTH OBJECT ARCHIVE</span>
+            <div className="mt-9 max-w-2xl">
+              <SearchBar
+                className="flex-col gap-3 sm:flex-row"
+                inputClassName="h-12 rounded-none border-[var(--border-medium)] bg-white/70 font-mono text-sm text-[var(--ink-primary)] focus-visible:ring-[var(--ink-muted)]"
+                buttonClassName="btn-primary h-12 rounded-none bg-[var(--ink-primary)] px-7 font-mono text-xs uppercase tracking-widest text-[var(--bg-base)] hover:bg-[var(--ink-primary)]"
+              />
+              <div className="mt-5 flex flex-col gap-4 sm:flex-row">
+                <Link
+                  href="/items/new"
+                  className="btn-primary inline-flex min-h-11 items-center justify-center bg-[var(--ink-primary)] px-6 font-mono text-xs uppercase tracking-widest text-[var(--bg-base)]"
+                >
+                  <span>신규 소장 기록 생성</span>
+                </Link>
+                <Link
+                  href="/search"
+                  className="inline-flex min-h-11 items-center justify-center border border-[var(--border-medium)] px-6 font-mono text-xs uppercase tracking-widest text-[var(--ink-secondary)] transition hover:border-[var(--accent-signal)] hover:text-[var(--accent-signal)]"
+                >
+                  최근 기록 살펴보기 <span className="ml-3">→</span>
+                </Link>
+              </div>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Link 
-              href="/search"
-              className="px-4 py-2 text-xs font-medium text-stone-600 hover:text-stone-900 transition-colors"
+
+          <div className="pointer-events-none absolute bottom-8 right-[-1.5rem] rotate-45 font-mono text-5xl uppercase leading-none tracking-widest text-[var(--ink-primary)] opacity-[0.06] md:right-16 md:text-7xl">
+            Specimen
+            <br />
+            EST.2026
+            <br />
+            ARK-∞
+          </div>
+        </div>
+
+        <div className="archive-container animate-in delay-1 pb-12">
+          <VaultStatusLog />
+        </div>
+      </section>
+
+      <section className="animate-in delay-2 border-y border-[var(--border-fine)] bg-[var(--bg-surface)]">
+        <div className="archive-container grid py-14 sm:grid-cols-3">
+          {statItems.map((stat, index) => (
+            <div
+              key={stat.label}
+              className="border-t border-[var(--border-fine)] py-8 sm:border-t-0 sm:px-8 sm:py-4 sm:[&:not(:first-child)]:border-l"
             >
-              소장 기록 조회
-            </Link>
-            <Link 
-              href="/records/new"
-              className="bg-stone-900 hover:bg-stone-800 text-stone-50 text-xs font-medium px-4 py-2 transition-colors rounded-none"
+              <p className="font-mono text-xs font-medium text-[var(--accent-signal)]">
+                {stat.index}
+              </p>
+              <p className="mt-4 font-mono text-[9px] uppercase tracking-widest text-[var(--ink-muted)]">
+                {stat.code}
+              </p>
+              <div className="mt-2 flex items-end gap-2">
+                <span className="font-display text-[64px] leading-none tracking-[-0.03em] text-[var(--ink-primary)]">
+                  {displayCount(stat.value)}
+                </span>
+                {stat.value > 0 ? (
+                  <span className="pb-2 font-mono text-xs uppercase tracking-widest text-[var(--ink-muted)]">
+                    {stat.unit}
+                  </span>
+                ) : null}
+              </div>
+              <p className="mt-4 text-sm text-[var(--ink-secondary)]">{stat.label}</p>
+              <Link
+                href={stat.href}
+                className="mt-6 inline-flex font-mono text-[10px] uppercase tracking-widest text-[var(--ink-muted)] transition hover:text-[var(--accent-signal)]"
+              >
+                전체 조회 →
+              </Link>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="archive-container animate-in delay-3 py-20 md:py-32">
+        <div className="mb-9 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+          <div className="border-l-[3px] border-[var(--accent-signal)] pl-5">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-[var(--ink-muted)]">
+              Recently Accessioned Objects
+            </p>
+            <h2 className="mt-2 font-display text-3xl text-[var(--ink-primary)]">
+              최근 소장품에 보태진 기록들
+            </h2>
+            <p className="mt-3 max-w-2xl font-mono text-sm font-light leading-7 text-[var(--ink-secondary)]">
+              방금 전까지는 아무도 기록하지 않았던 물건들입니다. 현재는 매우
+              엄숙하게 목록화되어 있다.
+            </p>
+          </div>
+          <Link
+            href="/search"
+            className="font-mono text-xs uppercase tracking-widest text-[var(--ink-secondary)] transition hover:text-[var(--accent-signal)]"
+          >
+            소장 기록 조회 →
+          </Link>
+        </div>
+
+        <div className="grid gap-6 [grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr))]">
+          {recentItems.map((item, index) => (
+            <RecentArchiveCard key={item.id} item={item} index={index} />
+          ))}
+        </div>
+      </section>
+
+      <section className="archive-container pb-20 md:pb-32">
+        <div className="relative overflow-hidden bg-[var(--ink-primary)] px-6 py-12 text-[var(--bg-base)] md:px-12 md:py-16">
+          <div className="pointer-events-none absolute -right-16 -top-20 h-80 w-80 opacity-[0.05]">
+            <svg viewBox="0 0 320 320" fill="none" aria-hidden="true">
+              {[44, 78, 112, 146].map((radius) => (
+                <circle
+                  key={radius}
+                  cx="160"
+                  cy="160"
+                  r={radius}
+                  stroke="currentColor"
+                  strokeWidth="1"
+                />
+              ))}
+            </svg>
+          </div>
+          <p className="absolute left-4 top-1/2 hidden -translate-y-1/2 -rotate-90 font-mono text-[10px] uppercase tracking-[0.5em] text-[var(--bg-base)] opacity-10 md:block">
+            A·R·K·I·V
+          </p>
+          <div className="relative max-w-3xl md:pl-12">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-[var(--accent-signal)]">
+              Acquisition Code of Conduct
+            </p>
+            <h2 className="mt-4 font-display text-4xl leading-tight text-[var(--bg-base)]">
+              보편적 <span className="italic">사물</span>의 기초 서식
+            </h2>
+            <p className="mt-5 max-w-2xl font-mono text-sm font-light leading-8 text-[rgba(247,245,239,0.65)]">
+              눈앞의 음료, 책상 위의 필기구, 오래 쓰던 전자기기까지. 완벽한
+              정보보다 첫 발견이 중요합니다. 단, 보관소는 아주 차분한 태도를
+              선호합니다.
+            </p>
+            <Link
+              href="/items/new"
+              className="mt-8 inline-flex min-h-11 items-center justify-center bg-[var(--accent-signal)] px-7 font-mono text-xs uppercase tracking-widest text-white transition hover:bg-[#d75b40]"
             >
-              + 신규 기록 생성
+              신규 소장 기록 생성
             </Link>
           </div>
         </div>
-      </header>
-
-      <main className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 space-y-24 z-10">
-        
-        {/* HERO SECTION */}
-        <section className="text-center space-y-8 max-w-4xl mx-auto">
-          <div className="inline-flex items-center justify-center rounded-none border border-stone-200 bg-stone-100/40 px-3 py-1 font-mono text-[9px] uppercase tracking-[0.25em] text-stone-500">
-            Open Object Registry
-          </div>
-          
-          <h1 
-            className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter text-stone-950 leading-[1.15]"
-            style={{ wordBreak: 'keep-all' }}
-          >
-            오늘의 평범한 물건도 시간이 지나면 한 시대의 흔적이 된다.
-          </h1>
-
-          <p 
-            className="max-w-2xl mx-auto text-sm sm:text-base text-stone-600 leading-relaxed"
-            style={{ wordBreak: 'keep-all' }}
-          >
-            지구물건보관소는 지금 실존하는 사물의 이름, 형태적 특징, 그리고 사람들의 일상적 기록 해설을 수집하여 영구 보존하는 열린 아카이브 플랫폼입니다.
-          </p>
-
-          <div className="flex flex-wrap items-center justify-center gap-3 pt-4">
-            <Link 
-              href="/records/new" 
-              className="bg-stone-900 hover:bg-stone-800 text-stone-50 text-xs font-semibold px-6 py-3.5 transition-all rounded-none border border-stone-900 shadow-sm"
-            >
-              기초 기록 수립하기
-            </Link>
-            <Link 
-              href="/search" 
-              className="bg-transparent hover:bg-stone-100 text-stone-800 text-xs font-semibold px-6 py-3.5 transition-all rounded-none border border-stone-200"
-            >
-              최근 기록 살펴보기
-            </Link>
-          </div>
-        </section>
-
-        {/* SYSTEM STATUS (수장고 환경 로그 계측 배너) */}
-        <section className="border border-stone-200 bg-stone-50/50 p-4 max-w-3xl mx-auto">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-            <div className="flex items-center gap-2">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              <span className="font-mono text-[10px] tracking-widest uppercase text-stone-500 font-bold">
-                [시스템 제어 로그]
-              </span>
-            </div>
-            <div className="font-mono text-[9px] tracking-[0.1em] text-stone-400 space-y-1 sm:space-y-0 sm:space-x-4 flex flex-col sm:flex-row">
-              <span>수장고 온도: <span className="text-stone-700 font-bold">20.4°C</span></span>
-              <span className="hidden sm:inline">/</span>
-              <span>습도: <span className="text-stone-700 font-bold">45.0% 유지 중</span></span>
-              <span className="hidden sm:inline">/</span>
-              <span>상태: <span className="text-stone-700 font-bold">대기 기초 자료 등록 가동 중</span></span>
-            </div>
-          </div>
-        </section>
-
-        {/* STATS BOARD SECTION */}
-        <section className="grid grid-cols-1 md:grid-cols-3 border-t border-b border-stone-200 divide-y md:divide-y-0 md:divide-x divide-stone-200/80 bg-white/40">
-          <div className="p-8 text-center md:text-left space-y-4">
-            <div className="flex flex-col">
-              <span className="font-mono text-[9px] tracking-widest uppercase text-stone-400">01 / TOTAL RECORDS</span>
-              <span className="text-xs font-medium text-stone-500 mt-1">총 소장 기록</span>
-            </div>
-            <div className="font-mono text-4xl font-light text-stone-900">
-              {systemStats.totalRecords} <span className="text-xs text-stone-400 font-sans ml-1">건</span>
-            </div>
-          </div>
-
-          <div className="p-8 text-center md:text-left space-y-4">
-            <div className="flex flex-col">
-              <span className="font-mono text-[9px] tracking-widest uppercase text-stone-400">02 / FIRST KEEPERS</span>
-              <span className="text-xs font-medium text-stone-500 mt-1">최초 등록자 수</span>
-            </div>
-            <div className="font-mono text-4xl font-light text-stone-900">
-              {systemStats.firstKeepers} <span className="text-xs text-stone-400 font-sans ml-1">명</span>
-            </div>
-          </div>
-
-          <div className="p-8 text-center md:text-left space-y-4">
-            <div className="flex flex-col">
-              <span className="font-mono text-[9px] tracking-widest uppercase text-stone-400">03 / MEMORY LEDGER</span>
-              <span className="text-xs font-medium text-stone-500 mt-1">누적 기억 기록</span>
-            </div>
-            <div className="font-mono text-4xl font-light text-stone-900">
-              {systemStats.memoryLedger} <span className="text-xs text-stone-400 font-sans ml-1">증언</span>
-            </div>
-          </div>
-        </section>
-
-        {/* RECENT MEMORIES SECTION (최근 편입된 소장기억 도감) */}
-        <section className="space-y-8">
-          <div className="border-b border-stone-200 pb-4 flex flex-col sm:flex-row items-baseline justify-between gap-2">
-            <div className="space-y-1">
-              <span className="font-mono text-[9px] tracking-widest uppercase text-stone-400">RECENTLY COMMITTED MEMORIES</span>
-              <h2 className="text-2xl font-bold tracking-tight text-stone-900">최근 소장품에 보태진 기억들</h2>
-            </div>
-            <span className="text-xs text-stone-500" style={{ wordBreak: 'keep-all' }}>
-              공개 기록물 아래에 채워진 개별 주관적 역사입니다.
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {recentMemories.map((memory) => (
-              <div 
-                key={memory.id} 
-                className="group relative border border-stone-200 bg-white p-6 hover:border-stone-400 transition-all flex flex-col justify-between space-y-6"
-              >
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between border-b border-stone-100 pb-3">
-                    <span className="font-mono text-[9px] text-stone-400 font-bold tracking-wider">
-                      {memory.specimenId}
-                    </span>
-                    <span className="font-mono text-[9px] text-stone-400">
-                      INDEX #{memory.id.padStart(3, '0')}
-                    </span>
-                  </div>
-                  <h3 className="text-base font-bold text-stone-950 group-hover:text-stone-800 transition-colors">
-                    {memory.itemTitle}
-                  </h3>
-                  <p 
-                    className="text-stone-600 text-xs leading-relaxed"
-                    style={{ wordBreak: 'keep-all' }}
-                  >
-                    "{memory.content}"
-                  </p>
-                </div>
-
-                <div className="flex items-center justify-between pt-4 border-t border-stone-50">
-                  <span className="text-[11px] font-medium text-stone-700">{memory.author}</span>
-                  <span className="font-mono text-[10px] text-stone-400">{memory.date}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* CTA BANNER SECTION (공식 수집 권고 안내 문서 스타일) */}
-        <section className="border border-stone-200 bg-[#FAF9F5] p-8 md:p-12 relative overflow-hidden">
-          <div className="absolute right-0 bottom-0 opacity-5 pointer-events-none translate-x-12 translate-y-12">
-            <svg width="240" height="240" viewBox="0 0 100 100" fill="currentColor">
-              <path d="M10 10h80v80H10zM30 30h40v40H30z" />
-            </svg>
-          </div>
-
-          <div className="max-w-3xl space-y-6">
-            <span className="font-mono text-[9px] tracking-widest uppercase text-stone-400 block">
-              ACQUISITION CODE OF CONDUCT
-            </span>
-            <h2 
-              className="text-2xl sm:text-3xl font-bold tracking-tight text-stone-950"
-              style={{ wordBreak: 'keep-all' }}
-            >
-              아직 우리 수장고에 등록되지 않은 보편적 사물의 기초 서식을 작성해 주십시오.
-            </h2>
-            <p 
-              className="text-xs sm:text-sm text-stone-600 leading-relaxed"
-              style={{ wordBreak: 'keep-all' }}
-            >
-              어제 먹은 가공 음료의 빈 병, 책상 구석에 방치된 오래된 볼펜, 서랍 속 잠자던 아날로그 스마트폰까지. 우리 시대의 평범한 문화 유산을 소장품 기록지로 영원히 박제할 수 있는 권한을 제공합니다.
-            </p>
-            <div className="pt-4 flex">
-              <Link 
-                href="/records/new"
-                className="bg-stone-900 hover:bg-stone-800 text-stone-50 text-xs font-semibold px-6 py-3.5 transition-colors rounded-none"
-              >
-                신규 기초 소장 서식 수립
-              </Link>
-            </div>
-          </div>
-        </section>
-
-      </main>
-
-      {/* 푸터 영역 */}
-      <footer className="border-t border-stone-200 bg-stone-100/30 py-12 text-center text-stone-400 font-mono text-[9px] tracking-widest">
-        <p>© 2026 EARTH OBJECT ARCHIVE. ALL SPECIMEN RECORDS PERMANENTLY KEPT.</p>
-      </footer>
+      </section>
     </div>
   );
 }
