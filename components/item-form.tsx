@@ -107,7 +107,7 @@ export function ItemForm({
     }
 
     if (!file) {
-      setError("대표 이미지는 꼭 필요합니다.");
+      setError("식별 이미지는 꼭 필요합니다.");
       return;
     }
 
@@ -167,7 +167,8 @@ export function ItemForm({
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid gap-5">
         <div className="space-y-2">
-          <Label htmlFor="name" className="text-stone-700">
+          <Label htmlFor="name" className="text-stone-800">
+            <span className="mr-2 font-mono text-xs text-stone-400">01.</span>
             물건 이름 <span className="text-xs text-stone-400">필수</span>
           </Label>
           <Input
@@ -179,11 +180,11 @@ export function ItemForm({
             }}
             onBlur={() => void checkDuplicate()}
             placeholder="예: 모나미 153 볼펜, 노란색 맥심 로고 에디션"
-            className="border-stone-300 bg-white text-stone-800 placeholder:text-stone-400 focus-visible:ring-stone-400"
+            className="rounded-none border-x-0 border-t-0 border-b-stone-300 bg-transparent px-0 text-stone-900 placeholder:text-stone-400 focus-visible:border-stone-800 focus-visible:ring-0"
             required
           />
           {duplicate?.exists ? (
-            <div className="rounded-lg border border-stone-300 bg-stone-100 p-3 text-sm leading-6">
+            <div className="border border-stone-300 bg-[#F4F1EA]/80 p-3 text-sm leading-6">
               <p className="flex items-start gap-2 font-semibold text-stone-700">
                 <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
                 이미 보존된 기록일 수 있어요.
@@ -200,28 +201,32 @@ export function ItemForm({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="image" className="text-stone-700">
+          <Label htmlFor="image" className="text-stone-800">
+            <span className="mr-2 font-mono text-xs text-stone-400">02.</span>
             식별 이미지 <span className="text-xs text-stone-400">필수</span>
           </Label>
           <label
             htmlFor="image"
-            className="flex min-h-64 cursor-pointer flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-stone-300 bg-stone-50/50 p-4 text-center transition hover:border-stone-500 hover:bg-stone-100/70"
+            className="flex min-h-56 cursor-pointer flex-col items-center justify-center gap-2 border border-dashed border-stone-300 bg-[#FFFCF4]/60 p-5 text-center transition hover:border-stone-500 hover:bg-[#F4F1EA]/70"
           >
             {previewUrl ? (
               <div className="w-full space-y-3">
                 <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-stone-400">
-                  Specimen Photo
+                  [ REGISTERED IMAGE SPECIMEN ]
                 </p>
                 <img
                   src={previewUrl}
                   alt="선택한 대표 이미지"
-                  className="mx-auto max-h-80 w-full rounded-md border border-stone-200 bg-white object-contain p-2 shadow-sm"
+                  className="mx-auto max-h-80 w-full border border-stone-200 bg-white object-contain p-2 shadow-sm"
                 />
               </div>
             ) : (
               <>
-                <span className="flex h-12 w-12 items-center justify-center rounded-md border border-stone-300 bg-white text-stone-500">
-                  <ImagePlus className="h-6 w-6" aria-hidden="true" />
+                <span className="flex h-10 w-10 items-center justify-center border border-stone-300 bg-white text-stone-500">
+                  <ImagePlus className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-stone-400">
+                  [ REGISTER IMAGE SPECIMEN ]
                 </span>
                 <span className="text-sm font-semibold text-stone-700">
                   표본 이미지를 선택하세요
@@ -246,7 +251,8 @@ export function ItemForm({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="description" className="text-stone-700">
+          <Label htmlFor="description" className="text-stone-800">
+            <span className="mr-2 font-mono text-xs text-stone-400">03.</span>
             기록 해설 <span className="text-xs text-stone-400">필수</span>
           </Label>
           <Textarea
@@ -255,7 +261,7 @@ export function ItemForm({
             onChange={(event) => setDescription(event.target.value)}
             placeholder="이 물건의 형태적 특징, 사용 목적, 또는 미래 인류학적 관점에서의 추정 용도를 서술하십시오. 예: 플라스틱 원통형 몸체 내부에 검은 필기용 액체가 내장된 도구. 주로 21세기 종이 매체에 기호를 기록하기 위해 사용됨."
             maxLength={160}
-            className="border-stone-300 bg-white text-stone-800 placeholder:text-stone-400 focus-visible:ring-stone-400"
+            className="min-h-28 rounded-none border-x-0 border-t-0 border-b-stone-300 bg-transparent px-0 text-stone-900 placeholder:text-stone-400 focus-visible:border-stone-800 focus-visible:ring-0"
             required
           />
           <p className="font-mono text-xs text-stone-400">{description.length}/160</p>
@@ -272,7 +278,8 @@ export function ItemForm({
 
         <div className="grid gap-4">
           <div className="space-y-2">
-            <Label htmlFor="brand" className="text-stone-700">
+            <Label htmlFor="brand" className="text-stone-800">
+              <span className="mr-2 font-mono text-xs text-stone-400">05.</span>
               브랜드/제조사 <span className="text-xs text-stone-400">선택</span>
             </Label>
             <Input
@@ -280,7 +287,7 @@ export function ItemForm({
               value={brand}
               onChange={(event) => setBrand(event.target.value)}
               placeholder="예: 주식회사 모나미 (Monami Co., Ltd.)"
-              className="border-stone-300 bg-white text-stone-800 placeholder:text-stone-400 focus-visible:ring-stone-400"
+              className="rounded-none border-x-0 border-t-0 border-b-stone-300 bg-transparent px-0 text-stone-900 placeholder:text-stone-400 focus-visible:border-stone-800 focus-visible:ring-0"
             />
           </div>
         </div>
@@ -296,7 +303,7 @@ export function ItemForm({
         type="submit"
         size="lg"
         disabled={isPending}
-        className="w-full bg-stone-800 text-stone-50 hover:bg-stone-700"
+        className="min-h-12 w-full rounded-none bg-stone-900 py-4 font-mono text-xs font-medium tracking-widest text-stone-100 hover:bg-stone-800"
       >
         {isPending ? (
           <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />

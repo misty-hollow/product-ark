@@ -27,10 +27,10 @@ function Chip({
       type="button"
       onClick={onClick}
       className={cn(
-        "rounded-md border px-3 py-2 text-sm font-medium transition",
+        "min-h-10 rounded-none border px-3 py-2 text-xs font-medium transition focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-stone-400",
         selected
-          ? "border-stone-800 bg-stone-800 text-stone-50"
-          : "border-stone-300 bg-white text-stone-600 hover:border-stone-500 hover:bg-stone-100"
+          ? "border-stone-900 bg-stone-900 text-stone-50"
+          : "border-stone-200 bg-transparent text-stone-600 hover:border-stone-300 hover:bg-stone-50"
       )}
     >
       {label}
@@ -54,10 +54,11 @@ export function CategorySelector({
     : "";
 
   return (
-    <div className="space-y-4 rounded-lg border border-stone-200 bg-white p-4">
+    <div className="space-y-4 border border-stone-200 bg-[#FFFCF4]/70 p-4">
       <div>
-        <p className="text-sm font-semibold text-stone-700">
-          분류 <span className="text-xs text-stone-400">선택</span>
+        <p className="text-sm font-semibold text-stone-800">
+          <span className="mr-2 font-mono text-xs text-stone-400">04.</span>
+          분류 체계 <span className="text-xs text-stone-400">필수</span>
         </p>
         <p className="mt-1 text-xs leading-5 text-stone-500">
           대분류, 중분류, 소분류를 차례로 선택합니다. 소분류까지 선택하면 보관소
@@ -125,7 +126,7 @@ export function CategorySelector({
         </div>
       ) : null}
 
-      <div className="rounded-md border border-stone-200 bg-stone-50 px-3 py-2 text-sm text-stone-500">
+      <div className="border border-stone-200 bg-[#F4F1EA]/80 px-3 py-2 text-sm text-stone-500">
         저장될 분류:{" "}
         <span className="font-semibold text-stone-800">
           {selectedPath || "소분류까지 선택하면 표시됩니다"}

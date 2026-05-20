@@ -56,13 +56,24 @@ export default async function HomePage() {
 
       <section className="mx-auto w-full max-w-6xl px-4 py-8">
         <div className="grid gap-3 sm:grid-cols-3">
-          <StatCard icon={Archive} label="총 소장 기록" value={stats.itemCount} />
+          <StatCard
+            icon={Archive}
+            label="총 소장 기록"
+            value={stats.itemCount}
+            code="TOTAL RECORDS"
+          />
           <StatCard
             icon={UsersRound}
             label="최초 등록자 수"
             value={stats.firstRecorderCount}
+            code="FIRST KEEPERS"
           />
-          <StatCard icon={Search} label="누적 기억 기록" value={stats.memoryCount} />
+          <StatCard
+            icon={Search}
+            label="누적 기억 기록"
+            value={stats.memoryCount}
+            code="MEMORY LEDGER"
+          />
         </div>
       </section>
 
@@ -95,11 +106,11 @@ export default async function HomePage() {
       </section>
 
       <section className="mx-auto w-full max-w-6xl px-4 py-8">
-        <div className="rounded-lg border border-stone-200 bg-white/70 p-6 shadow-sm md:p-8">
+        <div className="border border-stone-300 bg-[#F4F1EA] p-6 shadow-none md:p-8">
           <div className="grid gap-6 md:grid-cols-[1fr_auto] md:items-center">
             <div>
               <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-stone-400">
-                Unregistered Object
+                Unregistered Object Notice
               </p>
               <h2 className="mt-2 text-2xl font-semibold text-stone-800">
                 아직 보관소에 없는 자료를 기초 기록으로 남겨보세요.
@@ -109,7 +120,11 @@ export default async function HomePage() {
                 정보보다 첫 발견이 중요합니다.
               </p>
             </div>
-            <Button asChild size="lg" className="bg-stone-800 text-stone-50 hover:bg-stone-700">
+            <Button
+              asChild
+              size="lg"
+              className="rounded-none bg-stone-900 px-6 font-mono text-xs tracking-widest text-stone-50 hover:bg-stone-800"
+            >
               <Link href="/items/new">신규 소장 기록 생성</Link>
             </Button>
           </div>

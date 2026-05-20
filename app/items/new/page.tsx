@@ -25,7 +25,7 @@ export default async function NewItemPage({ searchParams }: NewItemPageProps) {
   const categoryTree = await getActiveCategoryTree();
 
   return (
-    <div className="mx-auto w-full max-w-3xl bg-[#FAF9F5] px-4 py-10 text-stone-800">
+    <div className="mx-auto w-full max-w-3xl bg-[#FAF9F5] px-4 py-10 text-stone-900">
       <div className="mb-7 space-y-4">
         <div>
           <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-stone-400">
@@ -37,7 +37,7 @@ export default async function NewItemPage({ searchParams }: NewItemPageProps) {
             작성합니다. 작성된 기록은 보관소의 신규 자료로 편입됩니다.
           </p>
         </div>
-        <div className="border-l-2 border-stone-400 bg-stone-100 p-4 text-xs leading-6 text-stone-600">
+        <div className="border-l-2 border-stone-400 bg-[#F4F1EA]/80 p-4 text-xs leading-6 text-stone-600">
           주의: 등록 대상은 현대 일상에서 관찰 가능한 실물이어야 합니다. 입력
           정보는 고증의 관점에서 사실에 기반해 차분히 작성해 주십시오.
         </div>
