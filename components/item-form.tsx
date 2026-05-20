@@ -111,10 +111,20 @@ export function ItemForm({ initialName = "" }: { initialName?: string }) {
         body: formData
       });
 
-      const uploadResult = (await uploadResponse.json()) as {
-        url?: string;
-        error?: string;
-      };
+      let uploadResult: {
+  url?: string;
+  error?: string;
+};
+
+try {
+  uploadResult = (await uploadResponse.json()) as {
+    url?: string;
+    error?: string;
+  };
+} catch {
+  setError("이미지 업로드에 실패했습니다. 잠시 후 다시 시도해주세요.");
+  return;
+}
 
       if (!uploadResponse.ok || !uploadResult.url) {
         setError(uploadResult.error ?? "이미지 업로드에 실패했습니다.");
