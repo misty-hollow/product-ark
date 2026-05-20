@@ -2,6 +2,14 @@ import "server-only";
 
 import { prisma } from "@/lib/prisma";
 
+const primaryCategoryInclude = {
+  parent: {
+    include: {
+      parent: true
+    }
+  }
+};
+
 export async function searchItems(query: string, limit = 24) {
   const trimmedQuery = query.trim();
 
@@ -11,6 +19,9 @@ export async function searchItems(query: string, limit = 24) {
       orderBy: { createdAt: "desc" },
       include: {
         firstRecorder: true,
+        primaryCategory: {
+          include: primaryCategoryInclude
+        },
         _count: {
           select: {
             memories: true
@@ -41,6 +52,9 @@ export async function searchItems(query: string, limit = 24) {
     orderBy: { createdAt: "desc" },
     include: {
       firstRecorder: true,
+      primaryCategory: {
+        include: primaryCategoryInclude
+      },
       _count: {
         select: {
           memories: true

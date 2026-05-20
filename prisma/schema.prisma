@@ -31,24 +31,48 @@ model User {
 }
 
 model Item {
-  id              String   @id @default(cuid())
-  name            String
-  slug            String   @unique
-  normalizedName  String
-  description     String
-  imageUrl        String   @db.Text
-  category        String?
-  brand           String?
-  firstRecorderId String
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id                String   @id @default(cuid())
+  name              String
+  slug              String   @unique
+  normalizedName    String
+  description       String
+  imageUrl          String   @db.Text
+  category          String?
+  primaryCategoryId String?
+  brand             String?
+  firstRecorderId   String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
-  firstRecorder User     @relation("FirstRecorderItems", fields: [firstRecorderId], references: [id], onDelete: Cascade)
-  memories      Memory[]
-  reports       Report[]
+  firstRecorder   User      @relation("FirstRecorderItems", fields: [firstRecorderId], references: [id], onDelete: Cascade)
+  primaryCategory Category? @relation(fields: [primaryCategoryId], references: [id], onDelete: SetNull)
+  memories        Memory[]
+  reports         Report[]
 
   @@index([normalizedName])
+  @@index([primaryCategoryId])
   @@index([createdAt])
+}
+
+model Category {
+  id          String     @id @default(cuid())
+  name        String
+  slug        String     @unique
+  description String?    @db.Text
+  level       Int
+  sortOrder   Int        @default(0)
+  isActive    Boolean    @default(true)
+  parentId    String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  parent   Category?  @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children Category[] @relation("CategoryTree")
+  items    Item[]
+
+  @@index([parentId])
+  @@index([level])
+  @@index([sortOrder])
 }
 
 model Memory {

@@ -10,8 +10,9 @@ import { MemoryList } from "@/components/memory-list";
 import { SpecimenImage } from "@/components/specimen-image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { getItemById, hasUserReportedItem } from "@/lib/items";
+import { formatCategoryRecordPath } from "@/lib/catalog";
 import { formatArchiveNumber, formatKoreanDate } from "@/lib/format";
+import { getItemById, hasUserReportedItem } from "@/lib/items";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -44,6 +45,8 @@ export default async function ItemDetailPage({
   const hasReported = userId ? await hasUserReportedItem(item.id, userId) : false;
   const isOwner = userId === item.firstRecorderId;
   const archiveNumber = formatArchiveNumber(item.createdAt, item.id);
+  const categoryPath =
+    formatCategoryRecordPath(item.primaryCategory, item.category) ?? "미분류";
   const isRecentlyRegistered =
     Date.now() - item.createdAt.getTime() < 1000 * 60 * 60 * 24 * 90;
   const preservationStatus = isRecentlyRegistered
@@ -82,7 +85,10 @@ export default async function ItemDetailPage({
               <Badge className="border border-amber-200/70 bg-amber-50 text-[10px] font-medium text-amber-800">
                 {preservationStatus}
               </Badge>
-              <Badge variant="outline" className="border-stone-200 font-mono text-[10px] text-stone-400">
+              <Badge
+                variant="outline"
+                className="border-stone-200 font-mono text-[10px] text-stone-400"
+              >
                 {item.slug}
               </Badge>
             </div>
@@ -110,10 +116,10 @@ export default async function ItemDetailPage({
             </div>
             <div className="grid border-b border-stone-200 sm:grid-cols-[160px_1fr]">
               <div className="bg-stone-50 px-4 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">
-                분류
+                분류 체계
               </div>
               <div className="px-4 py-3 text-sm text-stone-700">
-                {item.category || "미분류"}
+                {categoryPath}
               </div>
             </div>
             <div className="grid border-b border-stone-200 sm:grid-cols-[160px_1fr]">
@@ -126,7 +132,7 @@ export default async function ItemDetailPage({
             </div>
             <div className="grid border-b border-stone-200 sm:grid-cols-[160px_1fr]">
               <div className="bg-stone-50 px-4 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">
-                최초 등록자
+                최초 기록 기여자
               </div>
               <div className="flex flex-wrap items-center gap-2 px-4 py-3 text-sm text-stone-700">
                 <Sparkles className="h-4 w-4 text-amber-700" aria-hidden="true" />
@@ -194,8 +200,9 @@ export default async function ItemDetailPage({
           </h2>
           <p className="mt-3 text-sm leading-6 text-stone-500">
             이 개체와 관련된 개인의 목격 기억, 실제 사용 시기의 에피소드,
-            시대적 맥락에 대한 추가 진술을 남길 수 있습니다. 기억은 다소 흐릴
-            수 있으나, 의도적인 왜곡은 보관소 업무에 혼선을 줄 수 있습니다.
+            시대적 맥락에 대한 추가 진술을 남길 수 있습니다. 기억은 다소
+            흐릴 수 있으나, 의도적인 왜곡은 보관소 업무에 혼선을 줄 수
+            있습니다.
           </p>
         </div>
         <div className="space-y-4">
@@ -203,7 +210,7 @@ export default async function ItemDetailPage({
             <MemoryForm itemId={item.id} />
           ) : (
             <div className="rounded-lg border border-stone-200 bg-white p-4 text-sm text-stone-500">
-              로그인하면 이 물건에 기억 기록을 남길 수 있습니다.
+              로그인하면 이 물건에 대한 관련 기억 기록을 남길 수 있습니다.
               <div className="mt-3">
                 <SignInButton mode="modal">
                   <Button className="bg-stone-800 text-stone-50 hover:bg-stone-700">

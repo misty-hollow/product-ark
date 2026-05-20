@@ -4,6 +4,10 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { SpecimenImage } from "@/components/specimen-image";
+import {
+  formatCategoryRecordPath,
+  type CategoryPathRecord
+} from "@/lib/catalog";
 import { formatArchiveNumber, formatKoreanDate } from "@/lib/format";
 
 type ItemCardItem = {
@@ -12,6 +16,7 @@ type ItemCardItem = {
   description: string;
   imageUrl: string;
   category: string | null;
+  primaryCategory: CategoryPathRecord;
   brand: string | null;
   createdAt: Date;
   firstRecorder: {
@@ -24,6 +29,7 @@ type ItemCardItem = {
 
 export function ItemCard({ item }: { item: ItemCardItem }) {
   const archiveNumber = formatArchiveNumber(item.createdAt, item.id);
+  const categoryPath = formatCategoryRecordPath(item.primaryCategory, item.category);
 
   return (
     <Link href={`/items/${item.id}`} className="group block h-full">
@@ -40,9 +46,9 @@ export function ItemCard({ item }: { item: ItemCardItem }) {
               <Badge className="border border-stone-200 bg-stone-100 font-mono text-[10px] uppercase tracking-[0.16em] text-stone-600">
                 소장 기록
               </Badge>
-              {item.category ? (
+              {categoryPath ? (
                 <Badge variant="outline" className="border-stone-200 text-stone-500">
-                  {item.category}
+                  {categoryPath}
                 </Badge>
               ) : null}
             </div>

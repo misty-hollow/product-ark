@@ -2,6 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 import { ItemForm } from "@/components/item-form";
+import { getActiveCategoryTree } from "@/lib/categories";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -21,6 +22,7 @@ export default async function NewItemPage({ searchParams }: NewItemPageProps) {
 
   const params = await searchParams;
   const initialName = typeof params.name === "string" ? params.name : "";
+  const categoryTree = await getActiveCategoryTree();
 
   return (
     <div className="mx-auto w-full max-w-3xl bg-[#FAF9F5] px-4 py-10 text-stone-800">
@@ -40,7 +42,7 @@ export default async function NewItemPage({ searchParams }: NewItemPageProps) {
           정보는 고증의 관점에서 사실에 기반해 차분히 작성해 주십시오.
         </div>
       </div>
-      <ItemForm initialName={initialName} />
+      <ItemForm initialName={initialName} categories={categoryTree} />
     </div>
   );
 }

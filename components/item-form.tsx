@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { formatCategoryPath } from "@/lib/catalog";
+import type { CatalogNode } from "@/lib/catalog";
 import { ACCEPTED_IMAGE_TYPES, MAX_IMAGE_SIZE } from "@/lib/uploads";
 
 type DuplicateState =
@@ -30,13 +30,18 @@ type DuplicateState =
       };
     };
 
-export function ItemForm({ initialName = "" }: { initialName?: string }) {
+export function ItemForm({
+  initialName = "",
+  categories
+}: {
+  initialName?: string;
+  categories: CatalogNode[];
+}) {
   const router = useRouter();
   const [name, setName] = useState(initialName);
   const [description, setDescription] = useState("");
-  const [majorCategory, setMajorCategory] = useState("");
-  const [middleCategory, setMiddleCategory] = useState("");
-  const [minorCategory, setMinorCategory] = useState("");
+  const [primaryCategoryId, setPrimaryCategoryId] = useState("");
+  const [categoryPath, setCategoryPath] = useState("");
   const [brand, setBrand] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -106,6 +111,11 @@ export function ItemForm({ initialName = "" }: { initialName?: string }) {
       return;
     }
 
+    if (!primaryCategoryId || categoryPath.split(" > ").length < 3) {
+      setError("대분류, 중분류, 소분류까지 대표 분류 체계를 선택해주세요.");
+      return;
+    }
+
     startTransition(async () => {
       const formData = new FormData();
       formData.append("file", file);
@@ -138,7 +148,8 @@ export function ItemForm({ initialName = "" }: { initialName?: string }) {
       const result = await createItemAction({
         name,
         description,
-        category: formatCategoryPath(majorCategory, middleCategory, minorCategory),
+        category: categoryPath,
+        primaryCategoryId,
         brand,
         imageUrl: uploadResult.url
       });
@@ -251,13 +262,11 @@ export function ItemForm({ initialName = "" }: { initialName?: string }) {
         </div>
 
         <CategorySelector
-          major={majorCategory}
-          middle={middleCategory}
-          minor={minorCategory}
+          categories={categories}
+          selectedCategoryId={primaryCategoryId}
           onChange={(next) => {
-            setMajorCategory(next.major);
-            setMiddleCategory(next.middle);
-            setMinorCategory(next.minor);
+            setPrimaryCategoryId(next.categoryId);
+            setCategoryPath(next.categoryPath);
           }}
         />
 

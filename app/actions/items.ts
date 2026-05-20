@@ -17,6 +17,7 @@ type CreateItemInput = {
   description: string;
   imageUrl: string;
   category?: string;
+  primaryCategoryId?: string;
   brand?: string;
 };
 
@@ -48,13 +49,37 @@ export async function createItemAction(input: CreateItemInput) {
   const name = input.name.trim();
   const description = input.description.trim();
   const category = input.category?.trim();
+  const primaryCategoryId = input.primaryCategoryId?.trim();
   const brand = input.brand?.trim();
   const imageUrl = input.imageUrl.trim();
 
   if (!name || !description || !imageUrl) {
     return {
       ok: false,
-      error: "물건 이름, 대표 이미지, 한 줄 증언은 꼭 필요합니다."
+      error: "물건 이름, 식별 이미지, 기록 해설은 꼭 필요합니다."
+    };
+  }
+
+  if (!primaryCategoryId) {
+    return {
+      ok: false,
+      error: "대표 분류 체계를 선택해주세요."
+    };
+  }
+
+  const primaryCategory = await prisma.category.findUnique({
+    where: { id: primaryCategoryId },
+    select: {
+      id: true,
+      isActive: true,
+      level: true
+    }
+  });
+
+  if (!primaryCategory?.isActive || primaryCategory.level !== 3) {
+    return {
+      ok: false,
+      error: "사용 가능한 소분류를 대표 분류로 선택해주세요."
     };
   }
 
@@ -66,6 +91,7 @@ export async function createItemAction(input: CreateItemInput) {
     description,
     imageUrl,
     category,
+    primaryCategoryId,
     brand,
     firstRecorderId: user.id
   });

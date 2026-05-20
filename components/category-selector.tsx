@@ -1,13 +1,16 @@
 "use client";
 
-import { CATALOG_TREE, formatCategoryPath } from "@/lib/catalog";
+import {
+  findCatalogPathById,
+  formatCategoryPath,
+  type CatalogNode
+} from "@/lib/catalog";
 import { cn } from "@/lib/utils";
 
 type CategorySelectorProps = {
-  major: string;
-  middle: string;
-  minor: string;
-  onChange: (next: { major: string; middle: string; minor: string }) => void;
+  categories: CatalogNode[];
+  selectedCategoryId: string;
+  onChange: (next: { categoryId: string; categoryPath: string }) => void;
 };
 
 function Chip({
@@ -36,14 +39,19 @@ function Chip({
 }
 
 export function CategorySelector({
-  major,
-  middle,
-  minor,
+  categories,
+  selectedCategoryId,
   onChange
 }: CategorySelectorProps) {
-  const majorNode = CATALOG_TREE.find((node) => node.label === major);
-  const middleNode = majorNode?.children.find((node) => node.label === middle);
-  const selectedPath = formatCategoryPath(major, middle, minor);
+  const selectedPathNodes = selectedCategoryId
+    ? findCatalogPathById(categories, selectedCategoryId)
+    : null;
+  const majorNode = selectedPathNodes?.[0];
+  const middleNode = selectedPathNodes?.[1];
+  const minorNode = selectedPathNodes?.[2];
+  const selectedPath = selectedPathNodes
+    ? formatCategoryPath(selectedPathNodes.map((node) => node.name))
+    : "";
 
   return (
     <div className="space-y-4 rounded-lg border border-stone-200 bg-white p-4">
@@ -60,12 +68,12 @@ export function CategorySelector({
       <div className="space-y-2">
         <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">대분류</p>
         <div className="flex flex-wrap gap-2">
-          {CATALOG_TREE.map((node) => (
+          {categories.map((node) => (
             <Chip
-              key={node.label}
-              label={node.label}
-              selected={major === node.label}
-              onClick={() => onChange({ major: node.label, middle: "", minor: "" })}
+              key={node.id}
+              label={node.name}
+              selected={majorNode?.id === node.id}
+              onClick={() => onChange({ categoryId: node.id, categoryPath: node.name })}
             />
           ))}
         </div>
@@ -77,10 +85,15 @@ export function CategorySelector({
           <div className="flex flex-wrap gap-2">
             {majorNode.children.map((node) => (
               <Chip
-                key={node.label}
-                label={node.label}
-                selected={middle === node.label}
-                onClick={() => onChange({ major, middle: node.label, minor: "" })}
+                key={node.id}
+                label={node.name}
+                selected={middleNode?.id === node.id}
+                onClick={() =>
+                  onChange({
+                    categoryId: node.id,
+                    categoryPath: formatCategoryPath([majorNode.name, node.name])
+                  })
+                }
               />
             ))}
           </div>
@@ -91,12 +104,21 @@ export function CategorySelector({
         <div className="space-y-2">
           <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">소분류</p>
           <div className="flex flex-wrap gap-2">
-            {middleNode.children.map((label) => (
+            {middleNode.children.map((node) => (
               <Chip
-                key={label}
-                label={label}
-                selected={minor === label}
-                onClick={() => onChange({ major, middle, minor: label })}
+                key={node.id}
+                label={node.name}
+                selected={minorNode?.id === node.id}
+                onClick={() =>
+                  onChange({
+                    categoryId: node.id,
+                    categoryPath: formatCategoryPath([
+                      majorNode?.name,
+                      middleNode.name,
+                      node.name
+                    ])
+                  })
+                }
               />
             ))}
           </div>

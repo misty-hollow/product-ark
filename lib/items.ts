@@ -34,8 +34,17 @@ type CreateItemInput = {
   description: string;
   imageUrl: string;
   category?: string | null;
+  primaryCategoryId?: string | null;
   brand?: string | null;
   firstRecorderId: string;
+};
+
+const primaryCategoryInclude = {
+  parent: {
+    include: {
+      parent: true
+    }
+  }
 };
 
 export async function createItemWithUniqueSlug(input: CreateItemInput) {
@@ -54,11 +63,15 @@ export async function createItemWithUniqueSlug(input: CreateItemInput) {
           description: input.description,
           imageUrl: input.imageUrl,
           category: input.category || null,
+          primaryCategoryId: input.primaryCategoryId || null,
           brand: input.brand || null,
           firstRecorderId: input.firstRecorderId
         },
         include: {
-          firstRecorder: true
+          firstRecorder: true,
+          primaryCategory: {
+            include: primaryCategoryInclude
+          }
         }
       });
     } catch (error) {
@@ -101,6 +114,9 @@ export async function getRecentItems(limit = 6) {
     orderBy: { createdAt: "desc" },
     include: {
       firstRecorder: true,
+      primaryCategory: {
+        include: primaryCategoryInclude
+      },
       _count: {
         select: {
           memories: true
@@ -115,6 +131,9 @@ export async function getItemById(id: string) {
     where: { id },
     include: {
       firstRecorder: true,
+      primaryCategory: {
+        include: primaryCategoryInclude
+      },
       memories: {
         orderBy: { createdAt: "asc" },
         include: {
@@ -169,6 +188,9 @@ export async function getUserProfile(userId: string) {
         orderBy: { createdAt: "desc" },
         include: {
           firstRecorder: true,
+          primaryCategory: {
+            include: primaryCategoryInclude
+          },
           _count: {
             select: {
               memories: true
