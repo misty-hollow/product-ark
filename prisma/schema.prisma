@@ -7,6 +7,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum ReportReason {
+  DUPLICATE_RECORD
+  IRRELEVANT_RECORD
+  INAPPROPRIATE_IMAGE
+  AD_SPAM
+  PERSONAL_INFO
+  INCORRECT_INFO
+  OTHER
+}
+
 model User {
   id        String   @id
   name      String
@@ -17,6 +27,7 @@ model User {
 
   items    Item[]   @relation("FirstRecorderItems")
   memories Memory[]
+  reports  Report[]
 }
 
 model Item {
@@ -34,6 +45,7 @@ model Item {
 
   firstRecorder User     @relation("FirstRecorderItems", fields: [firstRecorderId], references: [id], onDelete: Cascade)
   memories      Memory[]
+  reports       Report[]
 
   @@index([normalizedName])
   @@index([createdAt])
@@ -50,6 +62,23 @@ model Memory {
   item Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@index([itemId])
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model Report {
+  id        String       @id @default(cuid())
+  reason    ReportReason
+  itemId    String
+  userId    String
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  item Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([itemId, userId])
   @@index([itemId])
   @@index([userId])
   @@index([createdAt])

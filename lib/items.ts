@@ -125,6 +125,22 @@ export async function getItemById(id: string) {
   });
 }
 
+export async function hasUserReportedItem(itemId: string, userId: string) {
+  const report = await prisma.report.findUnique({
+    where: {
+      itemId_userId: {
+        itemId,
+        userId
+      }
+    },
+    select: {
+      id: true
+    }
+  });
+
+  return Boolean(report);
+}
+
 export async function getArchiveStats() {
   const [itemCount, firstRecorderCount, memoryCount] = await Promise.all([
     prisma.item.count(),

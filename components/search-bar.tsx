@@ -19,18 +19,25 @@ export function SearchBar({
     <form action="/search" className={cn("flex w-full gap-2", className)}>
       <div className="relative min-w-0 flex-1">
         <Search
-          className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+          className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-400"
           aria-hidden="true"
         />
         <Input
           name="q"
           defaultValue={defaultQuery}
-          placeholder="오늘 본 물건의 이름을 적어보세요"
-          className={cn("h-11 pl-9", inputClassName)}
+          placeholder="식별 번호, 물건 명칭, 또는 기록 해설로 조회..."
+          className={cn(
+            "h-11 border-stone-300 bg-white/80 pl-9 text-stone-800 placeholder:text-stone-400 focus-visible:ring-stone-400",
+            inputClassName
+          )}
         />
       </div>
-      <Button type="submit" size="lg" className="shrink-0">
-        찾아보기
+      <Button
+        type="submit"
+        size="lg"
+        className="shrink-0 bg-stone-800 text-stone-50 hover:bg-stone-700"
+      >
+        조회
       </Button>
     </form>
   );

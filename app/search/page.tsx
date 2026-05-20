@@ -21,12 +21,14 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const items = await searchItems(query);
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-4 py-10">
+    <div className="mx-auto w-full max-w-6xl bg-[#FAF9F5] px-4 py-10 text-stone-800">
       <div className="mb-8 space-y-4">
         <div>
-          <p className="text-sm font-semibold text-primary">도감 검색</p>
-          <h1 className="mt-1 text-3xl font-bold">
-            {query ? `"${query}" 기록을 찾고 있습니다` : "최근 보존된 물건"}
+          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-stone-400">
+            Archive Search
+          </p>
+          <h1 className="mt-1 text-3xl font-semibold">
+            {query ? `"${query}"에 대한 소장 기록` : "소장 기록 조회"}
           </h1>
         </div>
         <SearchBar defaultQuery={query} className="max-w-2xl" />
@@ -40,12 +42,12 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         </div>
       ) : (
         <EmptyState
-          title="아직 기록되지 않은 상품입니다."
-          description="당신이 최초 기록자가 될 수 있어요. 사진과 한 줄 설명으로 이 물건을 지구 도감에 남겨보세요."
+          title="검색된 소장 기록이 없습니다."
+          description="아직 보관소가 이 물건을 모르는 상태입니다. 식별 가능한 자료가 있다면 신규 기초 기록으로 등록할 수 있습니다. 발견자는 기록자가 될 수 있습니다."
         >
-          <Button asChild>
+          <Button asChild className="bg-stone-800 text-stone-50 hover:bg-stone-700">
             <Link href={`/items/new?name=${encodeURIComponent(query)}`}>
-              최초 기록하기
+              신규 소장 기록 생성
             </Link>
           </Button>
         </EmptyState>

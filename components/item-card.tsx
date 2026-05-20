@@ -1,9 +1,10 @@
-import { CalendarDays, MessageCircle, Sparkles } from "lucide-react";
+import { CalendarDays, MessageCircle } from "lucide-react";
 import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { formatKoreanDate } from "@/lib/format";
+import { SpecimenImage } from "@/components/specimen-image";
+import { formatArchiveNumber, formatKoreanDate } from "@/lib/format";
 
 type ItemCardItem = {
   id: string;
@@ -22,42 +23,53 @@ type ItemCardItem = {
 };
 
 export function ItemCard({ item }: { item: ItemCardItem }) {
+  const archiveNumber = formatArchiveNumber(item.createdAt, item.id);
+
   return (
     <Link href={`/items/${item.id}`} className="group block h-full">
-      <Card className="h-full overflow-hidden transition hover:-translate-y-0.5 hover:shadow-archive">
-        <div className="aspect-[4/3] overflow-hidden bg-muted">
-          <img
-            src={item.imageUrl}
-            alt={item.name}
-            className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
-          />
-        </div>
+      <Card className="h-full overflow-hidden border-stone-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-stone-300 hover:shadow-md">
+        <SpecimenImage
+          src={item.imageUrl}
+          alt={item.name}
+          className="aspect-square border-b border-stone-200"
+          imageClassName="transition duration-300 group-hover:scale-[1.025]"
+        />
         <CardContent className="space-y-4 p-4">
-          <div className="space-y-2">
+          <div className="space-y-3">
             <div className="flex flex-wrap gap-2">
-              {item.category ? <Badge variant="secondary">{item.category}</Badge> : null}
-              {item.brand ? <Badge variant="outline">{item.brand}</Badge> : null}
+              <Badge className="border border-stone-200 bg-stone-100 font-mono text-[10px] uppercase tracking-[0.16em] text-stone-600">
+                소장 기록
+              </Badge>
+              {item.category ? (
+                <Badge variant="outline" className="border-stone-200 text-stone-500">
+                  {item.category}
+                </Badge>
+              ) : null}
             </div>
-            <h3 className="line-clamp-2 text-lg font-bold leading-snug">{item.name}</h3>
-            <p className="line-clamp-2 text-sm leading-6 text-muted-foreground">
+            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">
+              {archiveNumber}
+            </p>
+            <h3 className="line-clamp-2 text-lg font-semibold leading-snug text-stone-800">
+              {item.name}
+            </h3>
+            <p className="line-clamp-2 text-sm leading-6 text-stone-500">
               {item.description}
             </p>
           </div>
-          <div className="space-y-2 border-t pt-3 text-xs text-muted-foreground">
-            <p className="flex items-center gap-2">
-              <Sparkles className="h-3.5 w-3.5 text-primary" aria-hidden="true" />
-              최초 기록자: {item.firstRecorder.name}
-            </p>
-            <div className="flex items-center justify-between gap-3">
+          <div className="space-y-2 border-t border-stone-200 pt-3 text-xs text-stone-400">
+            <div className="flex items-center justify-between gap-3 font-mono">
               <span className="flex items-center gap-1.5">
                 <CalendarDays className="h-3.5 w-3.5" aria-hidden="true" />
                 {formatKoreanDate(item.createdAt)}
               </span>
               <span className="flex items-center gap-1.5">
                 <MessageCircle className="h-3.5 w-3.5" aria-hidden="true" />
-                기억 {item._count?.memories ?? 0}
+                증언 {item._count?.memories ?? 0}
               </span>
             </div>
+            <p className="truncate text-xs text-stone-500">
+              최초 등록자: {item.firstRecorder.name}
+            </p>
           </div>
         </CardContent>
       </Card>

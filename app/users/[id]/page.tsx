@@ -37,18 +37,20 @@ export default async function UserPage({ params }: UserPageProps) {
   }
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-4 py-8">
+    <div className="mx-auto w-full max-w-6xl bg-[#FAF9F5] px-4 py-8 text-stone-800">
       <UserProfileCard user={user} />
 
       <section className="mt-8">
         <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-sm font-semibold text-primary">보존한 물건</p>
-            <h2 className="mt-1 text-2xl font-bold">최초 기록 목록</h2>
+            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-stone-400">
+              Keeper Ledger
+            </p>
+            <h2 className="mt-1 text-2xl font-semibold">등록한 소장 기록</h2>
           </div>
           {id === userId ? (
-            <Button asChild>
-              <Link href="/items/new">새 기록 남기기</Link>
+            <Button asChild className="bg-stone-800 text-stone-50 hover:bg-stone-700">
+              <Link href="/items/new">신규 소장 기록 생성</Link>
             </Button>
           ) : null}
         </div>
@@ -61,12 +63,12 @@ export default async function UserPage({ params }: UserPageProps) {
           </div>
         ) : (
           <EmptyState
-            title="아직 최초 기록이 없습니다."
-            description="눈앞의 물건 하나를 지구 도감에 처음 남겨보세요."
+            title="아직 등록한 소장 기록이 없습니다."
+            description="식별 가능한 자료가 있다면 신규 기초 기록을 생성할 수 있습니다."
           >
             {id === userId ? (
-              <Button asChild>
-                <Link href="/items/new">첫 기록 남기기</Link>
+              <Button asChild className="bg-stone-800 text-stone-50 hover:bg-stone-700">
+                <Link href="/items/new">신규 소장 기록 생성</Link>
               </Button>
             ) : null}
           </EmptyState>

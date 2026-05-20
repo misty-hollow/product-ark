@@ -4,23 +4,23 @@
 
 @layer base {
   :root {
-    --background: 43 36% 96%;
-    --foreground: 174 31% 14%;
+    --background: 48 33% 97%;
+    --foreground: 28 15% 18%;
     --card: 0 0% 100%;
-    --card-foreground: 174 31% 14%;
-    --primary: 169 55% 28%;
-    --primary-foreground: 38 48% 96%;
-    --secondary: 43 24% 90%;
-    --secondary-foreground: 174 31% 14%;
-    --muted: 42 22% 91%;
-    --muted-foreground: 178 12% 39%;
-    --accent: 170 28% 89%;
-    --accent-foreground: 174 31% 14%;
+    --card-foreground: 28 15% 18%;
+    --primary: 24 10% 20%;
+    --primary-foreground: 48 33% 97%;
+    --secondary: 40 14% 90%;
+    --secondary-foreground: 28 15% 18%;
+    --muted: 40 13% 91%;
+    --muted-foreground: 25 7% 45%;
+    --accent: 38 18% 91%;
+    --accent-foreground: 28 15% 18%;
     --destructive: 0 74% 48%;
     --destructive-foreground: 0 0% 100%;
-    --border: 42 22% 84%;
-    --input: 42 22% 82%;
-    --ring: 169 55% 28%;
+    --border: 35 13% 82%;
+    --input: 35 13% 78%;
+    --ring: 25 7% 45%;
   }
 
   * {
@@ -33,6 +33,9 @@
 
   body {
     @apply bg-background text-foreground antialiased;
+    background-color: #faf9f5;
+    background-image: radial-gradient(rgba(87, 83, 78, 0.12) 0.7px, transparent 0.7px);
+    background-size: 18px 18px;
     font-family:
       ui-sans-serif,
       system-ui,
@@ -41,13 +44,45 @@
       "Segoe UI",
       sans-serif;
   }
+
+  @media print {
+    @page {
+      size: A4;
+      margin: 18mm;
+    }
+
+    body {
+      background: #ffffff !important;
+      color: #1c1917 !important;
+    }
+
+    header,
+    nav,
+    form,
+    button,
+    .no-print {
+      display: none !important;
+    }
+
+    main,
+    section,
+    div {
+      box-shadow: none !important;
+    }
+
+    .print-section {
+      break-inside: avoid;
+      border-color: #d6d3d1 !important;
+      background: #ffffff !important;
+    }
+  }
 }
 
 @layer utilities {
   .archive-grid {
     background-image:
-      linear-gradient(to right, rgba(22, 76, 69, 0.06) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(22, 76, 69, 0.06) 1px, transparent 1px);
-    background-size: 34px 34px;
+      linear-gradient(to right, rgba(87, 83, 78, 0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(87, 83, 78, 0.08) 1px, transparent 1px);
+    background-size: 42px 42px;
   }
 }
