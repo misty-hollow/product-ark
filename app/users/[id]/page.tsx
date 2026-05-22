@@ -37,19 +37,19 @@ export default async function UserPage({ params }: UserPageProps) {
   }
 
   return (
-    <div className="mx-auto w-full max-w-6xl bg-[#FAF9F5] px-4 py-8 text-stone-800">
+    <div className="archive-container bg-[#FAF9F5] py-10 text-stone-800 md:py-16">
       <UserProfileCard user={user} />
 
-      <section className="mt-8">
-        <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+      <section className="mt-10">
+        <div className="mb-6 flex flex-col gap-4 border-l-[3px] border-[var(--accent-signal)] pl-5 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-stone-400">
-              Keeper Ledger
-            </p>
-            <h2 className="mt-1 text-2xl font-semibold">등록한 소장 기록</h2>
+            <p className="label">Keeper Ledger</p>
+            <h2 className="mt-2 text-[var(--text-2xl)] font-semibold">
+              등록한 소장 기록
+            </h2>
           </div>
           {id === userId ? (
-            <Button asChild className="bg-stone-800 text-stone-50 hover:bg-stone-700">
+            <Button asChild className="rounded-none bg-stone-900 text-stone-50 hover:bg-stone-800">
               <Link href="/items/new">신규 소장 기록 생성</Link>
             </Button>
           ) : null}
@@ -64,10 +64,10 @@ export default async function UserPage({ params }: UserPageProps) {
         ) : (
           <EmptyState
             title="아직 등록한 소장 기록이 없습니다."
-            description="식별 가능한 자료가 있다면 신규 기초 기록을 생성할 수 있습니다."
+            description="식별 가능한 자료가 있다면 신규 기초 기록으로 보관소에 남길 수 있습니다."
           >
             {id === userId ? (
-              <Button asChild className="bg-stone-800 text-stone-50 hover:bg-stone-700">
+              <Button asChild className="rounded-none bg-stone-900 text-stone-50 hover:bg-stone-800">
                 <Link href="/items/new">신규 소장 기록 생성</Link>
               </Button>
             ) : null}

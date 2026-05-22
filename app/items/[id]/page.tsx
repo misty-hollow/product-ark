@@ -47,92 +47,79 @@ export default async function ItemDetailPage({
   const archiveNumber = formatArchiveNumber(item.createdAt, item.id);
   const categoryPath =
     formatCategoryRecordPath(item.primaryCategory, item.category) ?? "미분류";
-  const isRecentlyRegistered =
-    Date.now() - item.createdAt.getTime() < 1000 * 60 * 60 * 24 * 90;
-  const preservationStatus = isRecentlyRegistered
-    ? "보존 상태: 양호 (일상적 관찰 가능)"
-    : "보존 상태: 양호";
+  const preservationStatus = "보존됨";
 
   return (
-    <div className="mx-auto w-full max-w-6xl bg-[#FAF9F5] px-4 py-8 text-stone-800">
+    <div className="archive-container bg-[#FAF9F5] py-10 text-stone-800 md:py-16">
       {created ? (
-        <div className="mb-5 rounded-lg border border-stone-300 bg-stone-100 p-4 text-sm font-semibold text-stone-700">
+        <div className="mb-6 border border-stone-300 bg-[#F4F1EA] p-4 text-sm font-semibold text-stone-700">
           <CheckCircle2 className="mr-2 inline h-4 w-4" aria-hidden="true" />
-          기초 소장 기록 생성 완료. 본 개체는 지구물건보관소의 정식 아카이브
-          자료로 편입되었습니다. 보관소는 이 물건의 존재를 공식적으로 기억하기
-          시작합니다. 식별번호: {archiveNumber}
+          기초 소장 기록 생성 완료. 본 개체는 지구물건보관소의 신규 자료로
+          편입되었습니다. 소장번호: {archiveNumber}
         </div>
       ) : null}
 
-      <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
-        <section className="print-section rounded-lg border border-stone-200 bg-white p-3 shadow-sm">
+      <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
+        <section className="print-section border border-stone-200 bg-white/80 p-3 shadow-sm">
           <SpecimenImage
             src={item.imageUrl}
             alt={item.name}
-            className="aspect-[4/3] rounded-md border border-stone-200 shadow-inner"
+            className="aspect-[4/3] border border-stone-200 shadow-inner"
           />
           <p className="mt-3 text-center font-mono text-[10px] uppercase tracking-[0.22em] text-stone-400">
             Specimen Image
           </p>
         </section>
 
-        <section className="print-section space-y-6 rounded-lg border border-stone-200 bg-white p-5 shadow-sm">
-          <div className="space-y-4">
+        <section className="print-section space-y-6 border border-stone-200 bg-[#FFFCF4] p-5 shadow-sm">
+          <div className="space-y-5">
             <div className="flex flex-wrap gap-2">
-              <Badge className="border border-stone-200 bg-stone-100 font-mono text-[10px] uppercase tracking-[0.16em] text-stone-600">
-                Artifact Registry Sheet
+              <Badge className="rounded-none border border-stone-200 bg-stone-100 font-mono text-[10px] uppercase tracking-[0.16em] text-stone-600">
+                소장품 기록지
               </Badge>
-              <Badge className="border border-amber-200/70 bg-amber-50 text-[10px] font-medium text-amber-800">
-                {preservationStatus}
+              <Badge className="rounded-none border border-emerald-200/70 bg-emerald-50 text-[10px] font-medium text-emerald-800">
+                상태: {preservationStatus}
               </Badge>
               <Badge
                 variant="outline"
-                className="border-stone-200 font-mono text-[10px] text-stone-400"
+                className="rounded-none border-stone-200 font-mono text-[10px] text-stone-400"
               >
                 {item.slug}
               </Badge>
             </div>
             <div>
-              <p className="mb-3 font-mono text-xs uppercase tracking-[0.22em] text-stone-400">
-                {archiveNumber}
-              </p>
-              <h1 className="text-3xl font-semibold leading-tight text-stone-800 md:text-4xl">
+              <p className="label mb-3">{archiveNumber}</p>
+              <h1 className="text-[var(--text-2xl)] font-semibold leading-tight text-stone-900 md:text-[var(--text-3xl)]">
                 {item.name}
               </h1>
-              <p className="mt-4 text-base leading-8 text-stone-500">
+              <p className="mt-5 text-[var(--text-base)] leading-[1.9] text-stone-600">
                 {item.description}
               </p>
             </div>
           </div>
 
-          <div className="overflow-hidden rounded-lg border border-stone-200">
-            <div className="grid border-b border-stone-200 sm:grid-cols-[160px_1fr]">
+          <div className="overflow-hidden border border-stone-200">
+            {[
+              ["소장번호", archiveNumber],
+              ["분류 체계", categoryPath],
+              ["브랜드/제조사", item.brand || "기록 없음"],
+              ["최초 등록일", formatKoreanDate(item.createdAt)],
+              ["상태", preservationStatus],
+              ["관련 기억 기록", `${item.memories.length}건`]
+            ].map(([label, value]) => (
+              <div
+                key={label}
+                className="grid border-b border-stone-200 last:border-b-0 sm:grid-cols-[160px_1fr]"
+              >
+                <div className="bg-stone-50 px-4 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">
+                  {label}
+                </div>
+                <div className="px-4 py-3 text-sm text-stone-700">{value}</div>
+              </div>
+            ))}
+            <div className="grid border-t border-stone-200 sm:grid-cols-[160px_1fr]">
               <div className="bg-stone-50 px-4 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">
-                소장번호
-              </div>
-              <div className="px-4 py-3 font-mono text-sm text-stone-700">
-                {archiveNumber}
-              </div>
-            </div>
-            <div className="grid border-b border-stone-200 sm:grid-cols-[160px_1fr]">
-              <div className="bg-stone-50 px-4 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">
-                분류 체계
-              </div>
-              <div className="px-4 py-3 text-sm text-stone-700">
-                {categoryPath}
-              </div>
-            </div>
-            <div className="grid border-b border-stone-200 sm:grid-cols-[160px_1fr]">
-              <div className="bg-stone-50 px-4 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">
-                브랜드/제조사
-              </div>
-              <div className="px-4 py-3 text-sm text-stone-700">
-                {item.brand || "기록 없음"}
-              </div>
-            </div>
-            <div className="grid border-b border-stone-200 sm:grid-cols-[160px_1fr]">
-              <div className="bg-stone-50 px-4 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">
-                최초 기록 기여자
+                최초 등록자
               </div>
               <div className="flex flex-wrap items-center gap-2 px-4 py-3 text-sm text-stone-700">
                 <Sparkles className="h-4 w-4 text-amber-700" aria-hidden="true" />
@@ -143,39 +130,14 @@ export default async function ItemDetailPage({
                 >
                   {item.firstRecorder.name}
                 </Link>
-                <span className="rounded border border-amber-200/70 bg-amber-50 px-1.5 py-0.5 text-[10px] font-medium text-amber-800">
+                <span className="border border-amber-200/70 bg-amber-50 px-1.5 py-0.5 text-[10px] font-medium text-amber-800">
                   최초 등록자
                 </span>
               </div>
             </div>
-            <div className="grid sm:grid-cols-[160px_1fr]">
-              <div className="bg-stone-50 px-4 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">
-                최초 등록일
-              </div>
-              <div className="flex items-center gap-2 px-4 py-3 text-sm text-stone-700">
-                <CalendarDays className="h-4 w-4 text-stone-400" aria-hidden="true" />
-                {formatKoreanDate(item.createdAt)}
-              </div>
-            </div>
-            <div className="grid border-t border-stone-200 sm:grid-cols-[160px_1fr]">
-              <div className="bg-stone-50 px-4 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">
-                상태
-              </div>
-              <div className="px-4 py-3 text-sm text-stone-700">
-                {preservationStatus}
-              </div>
-            </div>
-            <div className="grid border-t border-stone-200 sm:grid-cols-[160px_1fr]">
-              <div className="bg-stone-50 px-4 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">
-                관련 기억 기록
-              </div>
-              <div className="px-4 py-3 font-mono text-sm text-stone-700">
-                {item.memories.length}
-              </div>
-            </div>
           </div>
 
-          <div className="rounded-lg border border-stone-200 bg-stone-50 p-4 text-sm leading-6 text-stone-500">
+          <div className="border border-stone-200 bg-stone-50 p-4 text-sm leading-7 text-stone-500">
             <ShieldCheck className="mr-2 inline h-4 w-4 text-stone-500" aria-hidden="true" />
             {formatKoreanDate(item.createdAt)} 지구물건보관소에 기초 자료로
             편입되었습니다.
@@ -190,30 +152,26 @@ export default async function ItemDetailPage({
         </section>
       </div>
 
-      <section className="mt-8 grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
-        <div>
-          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-stone-400">
-            Memory Ledger
-          </p>
-          <h2 className="mt-1 text-2xl font-semibold text-stone-800">
-            관련 기억 기록 및 고증 (Memory Ledger)
+      <section className="mt-12 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="border-l-[3px] border-[var(--accent-signal)] pl-5">
+          <p className="label">Memory Ledger</p>
+          <h2 className="mt-2 text-[var(--text-2xl)] font-semibold text-stone-900">
+            이 물건을 기억하는 사람들
           </h2>
-          <p className="mt-3 text-sm leading-6 text-stone-500">
-            이 개체와 관련된 개인의 목격 기억, 실제 사용 시기의 에피소드,
-            시대적 맥락에 대한 추가 진술을 남길 수 있습니다. 기억은 다소
-            흐릴 수 있으나, 의도적인 왜곡은 보관소 업무에 혼선을 줄 수
-            있습니다.
+          <p className="mt-4 text-[var(--text-base)] leading-[1.9] text-stone-600">
+            이 물건과 함께 기억되는 사용 경험, 시대적 맥락, 발견 장소를 관련
+            기억 기록으로 남길 수 있습니다.
           </p>
         </div>
         <div className="space-y-4">
           {userId ? (
             <MemoryForm itemId={item.id} />
           ) : (
-            <div className="rounded-lg border border-stone-200 bg-white p-4 text-sm text-stone-500">
+            <div className="border border-stone-200 bg-white p-4 text-sm text-stone-500">
               로그인하면 이 물건에 대한 관련 기억 기록을 남길 수 있습니다.
               <div className="mt-3">
                 <SignInButton mode="modal">
-                  <Button className="bg-stone-800 text-stone-50 hover:bg-stone-700">
+                  <Button className="rounded-none bg-stone-900 text-stone-50 hover:bg-stone-800">
                     로그인하기
                   </Button>
                 </SignInButton>

@@ -33,7 +33,7 @@ export function ItemCard({ item }: { item: ItemCardItem }) {
 
   return (
     <Link href={`/items/${item.id}`} className="group block h-full">
-      <Card className="h-full overflow-hidden border-stone-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-stone-300 hover:shadow-md">
+      <Card className="h-full overflow-hidden rounded-none border-stone-200 bg-[#FFFCF4]/90 shadow-none transition hover:-translate-y-0.5 hover:border-stone-300 hover:shadow-[0_12px_32px_rgba(26,26,24,0.08)]">
         <SpecimenImage
           src={item.imageUrl}
           alt={item.name}
@@ -55,10 +55,10 @@ export function ItemCard({ item }: { item: ItemCardItem }) {
             <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">
               {archiveNumber}
             </p>
-            <h3 className="line-clamp-2 text-lg font-semibold leading-snug text-stone-800">
+            <h3 className="line-clamp-2 text-[var(--text-lg)] font-medium leading-snug tracking-[-0.02em] text-stone-800">
               {item.name}
             </h3>
-            <p className="line-clamp-2 text-sm leading-6 text-stone-500">
+            <p className="line-clamp-2 text-sm leading-7 text-stone-500">
               {item.description}
             </p>
           </div>

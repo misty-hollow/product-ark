@@ -34,21 +34,21 @@ export function MemoryForm({ itemId }: { itemId: string }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-3 rounded-md border border-stone-200 bg-white p-4 shadow-sm"
+      className="space-y-3 border border-stone-200 bg-[#FFFCF4] p-4 shadow-sm"
     >
       <Textarea
         value={content}
         onChange={(event) => setContent(event.target.value)}
         maxLength={500}
         placeholder="예: 본 진술인은 2010년경 이 제품을 주로 독서실에서 사용했으며, 마찰음이 다소 거슬렸던 기억이 있음."
-        className="border-stone-300 bg-stone-50/50 text-stone-700 placeholder:text-stone-400 focus-visible:ring-stone-400"
+        className="rounded-none border-x-0 border-t-0 border-b-stone-300 bg-transparent text-stone-700 placeholder:text-stone-400 focus-visible:border-stone-800 focus-visible:ring-0"
       />
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="font-mono text-xs text-stone-400">{content.length}/500</p>
         <Button
           type="submit"
           disabled={isPending || content.trim().length < 2}
-          className="bg-stone-800 text-stone-50 hover:bg-stone-700"
+          className="min-h-11 rounded-none bg-stone-900 text-stone-50 hover:bg-stone-800"
         >
           {isPending ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />

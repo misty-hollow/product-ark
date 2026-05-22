@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 
+import { EmptyState } from "@/components/empty-state";
 import { SearchBar } from "@/components/search-bar";
 import { SpecimenImage } from "@/components/specimen-image";
+import { Button } from "@/components/ui/button";
 import { VaultStatusLog } from "@/components/vault-status-log";
 import { formatArchiveNumber, formatKoreanDate } from "@/lib/format";
 
@@ -124,16 +126,13 @@ export function HomePageClient({
               [OPEN OBJECT REGISTRY]
             </div>
             <h1 className="mt-8 max-w-5xl font-display text-[var(--text-hero)] font-black leading-none tracking-[-0.04em] text-[var(--ink-primary)]">
-              <span className="font-black">오늘의 평범한 물건도</span>
+              <span className="font-black">오늘의 물건은</span>
               <br />
-              <span className="font-black">시간이 지나면</span>
-              <br />
-              <span className="font-light tracking-tight">한 시대의 흔적이 됩니다.</span>
+              <span className="font-light tracking-tight">내일의 자료가 됩니다.</span>
             </h1>
             <p className="mt-8 max-w-3xl text-[var(--text-base)] font-light leading-[1.9] text-[var(--ink-secondary)]">
-              지구물건보관소는 지금 실존하는 사물의 이름, 형태적 특징, 그리고
-              사람들의 일상적 기록 해설을 수집하여 영구 보존하는 열린 아카이브
-              플랫폼입니다.
+              지구물건보관소는 지금 존재하는 물건의 이름, 모습, 해설과 기억을
+              기록하는 오픈 아카이브입니다.
             </p>
 
             <div className="mt-9 max-w-2xl">
@@ -231,15 +230,22 @@ export function HomePageClient({
           </Link>
         </div>
 
-        <div className="grid gap-6 [grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr))]">
-          {recentItems.map((item, index) => (
-            <RecentArchiveCard
-              key={item.id}
-              item={item}
-              index={index}
-            />
-          ))}
-        </div>
+        {recentItems.length > 0 ? (
+          <div className="grid gap-6 [grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr))]">
+            {recentItems.map((item, index) => (
+              <RecentArchiveCard key={item.id} item={item} index={index} />
+            ))}
+          </div>
+        ) : (
+          <EmptyState
+            title="아직 보관소에 등록된 자료가 없습니다."
+            description="첫 번째 소장 기록을 생성할 수 있습니다. 보관소는 아직 조용하지만, 업무는 시작될 준비가 되어 있습니다."
+          >
+            <Button asChild className="rounded-none bg-stone-900 text-stone-50 hover:bg-stone-800">
+              <Link href="/items/new">신규 소장 기록 생성</Link>
+            </Button>
+          </EmptyState>
+        )}
       </section>
 
       <section className="archive-container pb-20 md:pb-32">
