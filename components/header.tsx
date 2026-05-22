@@ -1,26 +1,36 @@
 "use client";
 
-import { Plus, Search } from "lucide-react";
+import { Home, Plus, Search, UserRound } from "lucide-react";
 import Link from "next/link";
-import { SignInButton, SignUpButton, SignedIn, SignedOut } from "@clerk/nextjs";
+import {
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  useUser
+} from "@clerk/nextjs";
 
 import { UserNav } from "@/components/user-nav";
 import { Button } from "@/components/ui/button";
 
 export function Header() {
+  const { user } = useUser();
+  const profileHref = user?.id ? `/users/${user.id}` : "/sign-in";
+
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--border-fine)] bg-[var(--bg-base)]/88 shadow-[0_8px_28px_rgba(26,26,24,0.035)] backdrop-blur-xl">
       <div className="archive-container flex h-[72px] items-center justify-between gap-3">
         <Link href="/" className="flex min-w-0 items-center gap-3">
           <span className="grid h-9 w-9 shrink-0 place-items-center border border-[var(--ink-primary)]/30 bg-[var(--bg-surface)] text-[var(--ink-primary)]">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              aria-hidden="true"
-            >
-              <rect x="0.75" y="0.75" width="14.5" height="14.5" stroke="currentColor" strokeWidth="1.5" />
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <rect
+                x="0.75"
+                y="0.75"
+                width="14.5"
+                height="14.5"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              />
               <path d="M8 1.5V14.5M1.5 8H14.5" stroke="currentColor" strokeWidth="1" />
             </svg>
           </span>
@@ -83,6 +93,28 @@ export function Header() {
           </SignedIn>
         </nav>
       </div>
+
+      <nav className="fixed inset-x-0 bottom-0 z-50 grid h-16 grid-cols-4 border-t border-[var(--border-fine)] bg-[var(--bg-base)]/95 px-2 backdrop-blur sm:hidden">
+        {[
+          { href: "/", label: "홈", icon: Home },
+          { href: "/search", label: "조회", icon: Search },
+          { href: "/items/new", label: "기록", icon: Plus },
+          { href: profileHref, label: "프로필", icon: UserRound }
+        ].map((item) => {
+          const Icon = item.icon;
+
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="flex min-h-11 flex-col items-center justify-center gap-1 font-mono text-[10px] uppercase tracking-wider text-[var(--ink-secondary)] transition hover:text-[var(--ink-primary)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--ink-muted)]"
+            >
+              <Icon className="h-4 w-4" aria-hidden="true" />
+              {item.label}
+            </Link>
+          );
+        })}
+      </nav>
     </header>
   );
 }

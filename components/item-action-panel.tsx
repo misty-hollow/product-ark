@@ -28,13 +28,13 @@ export function ItemActionPanel({
   const [reason, setReason] = useState<ReportReasonValue>(REPORT_REASONS[0].value);
   const [reportSubmitted, setReportSubmitted] = useState(hasReported);
   const [message, setMessage] = useState<string | null>(
-    hasReported ? "신고가 접수되었습니다." : null
+    hasReported ? "신고가 접수되었습니다" : null
   );
   const [error, setError] = useState<string | null>(null);
 
   function handleDelete() {
     const confirmed = window.confirm(
-      "이 소장 기록을 삭제할까요? 삭제하면 이 물건에 남겨진 증언도 함께 삭제됩니다."
+      "이 소장 기록을 보존 해제할까요? 해제하면 이 물건에 남겨진 기억 기록도 함께 삭제됩니다."
     );
 
     if (!confirmed) return;
@@ -44,7 +44,7 @@ export function ItemActionPanel({
       const result = await deleteItemAction(itemId);
 
       if (!result.ok) {
-        setError(result.error ?? "기록을 삭제하지 못했습니다.");
+        setError(result.error ?? "기록을 보존 해제하지 못했습니다.");
         return;
       }
 
@@ -67,7 +67,7 @@ export function ItemActionPanel({
 
       setReportSubmitted(true);
       setIsReportOpen(false);
-      setMessage(result.message ?? "신고가 접수되었습니다.");
+      setMessage(result.message ?? "신고가 접수되었습니다");
       router.refresh();
     });
   }
@@ -77,12 +77,14 @@ export function ItemActionPanel({
   }
 
   return (
-    <div className="space-y-3 rounded-lg border border-stone-200 bg-stone-50 p-4">
+    <div className="space-y-3 border border-[var(--border-fine)] bg-[var(--bg-surface)]/70 p-4">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="text-sm font-semibold text-stone-800">소장 기록 관리</p>
-          <p className="mt-1 text-xs text-stone-500">
-            삭제는 최초 기록자 본인만 할 수 있습니다.
+          <p className="text-sm font-semibold text-[var(--ink-primary)]">
+            소장 기록 관리
+          </p>
+          <p className="mt-1 text-xs text-[var(--ink-secondary)]">
+            보존 해제는 최초 등록자 본인만 수행할 수 있습니다.
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -90,7 +92,7 @@ export function ItemActionPanel({
             <Button
               type="button"
               variant="outline"
-              className="border-stone-300 text-stone-600 hover:bg-stone-100"
+              className="rounded-none border-[var(--border-medium)] text-[var(--ink-secondary)] hover:bg-[var(--bg-surface)]"
               onClick={() => setIsReportOpen((current) => !current)}
               disabled={reportSubmitted}
             >
@@ -102,6 +104,7 @@ export function ItemActionPanel({
             <Button
               type="button"
               variant="destructive"
+              className="rounded-none"
               onClick={handleDelete}
               disabled={isDeletePending}
             >
@@ -117,13 +120,13 @@ export function ItemActionPanel({
       </div>
 
       {isReportOpen && !reportSubmitted ? (
-        <div className="grid gap-3 rounded-lg border border-stone-200 bg-white p-3 sm:grid-cols-[1fr_auto] sm:items-end">
-          <label className="grid gap-2 text-sm font-medium text-stone-700">
+        <div className="grid gap-3 border border-[var(--border-fine)] bg-white p-3 sm:grid-cols-[1fr_auto] sm:items-end">
+          <label className="grid gap-2 text-sm font-medium text-[var(--ink-secondary)]">
             신고 사유
             <select
               value={reason}
               onChange={(event) => setReason(event.target.value as ReportReasonValue)}
-              className="h-10 rounded-md border border-stone-300 bg-stone-50 px-3 text-sm text-stone-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-400"
+              className="h-10 rounded-none border border-[var(--border-medium)] bg-[var(--bg-base)] px-3 text-sm text-[var(--ink-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ink-muted)]"
             >
               {REPORT_REASONS.map((reportReason) => (
                 <option key={reportReason.value} value={reportReason.value}>
@@ -136,7 +139,7 @@ export function ItemActionPanel({
             type="button"
             onClick={handleReport}
             disabled={isReportPending}
-            className="bg-stone-800 text-stone-50 hover:bg-stone-700"
+            className="rounded-none bg-[var(--ink-primary)] text-[var(--bg-base)] hover:bg-[var(--accent-signal)]"
           >
             {isReportPending ? (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
@@ -148,7 +151,7 @@ export function ItemActionPanel({
         </div>
       ) : null}
 
-      {message ? <p className="text-sm font-semibold text-stone-700">{message}</p> : null}
+      {message ? <p className="text-sm font-semibold text-[var(--ink-primary)]">{message}</p> : null}
       {error ? <p className="text-sm text-destructive">{error}</p> : null}
     </div>
   );

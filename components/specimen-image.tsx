@@ -14,8 +14,8 @@ type SpecimenImageProps = {
 
 function Placeholder() {
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-stone-100 text-center text-stone-400">
-      <div className="flex h-12 w-12 items-center justify-center rounded-md border border-stone-300 bg-stone-50">
+    <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-[var(--bg-surface)] text-center text-[var(--ink-muted)]">
+      <div className="flex h-12 w-12 items-center justify-center border border-[var(--border-medium)] bg-[var(--bg-base)]">
         <Archive className="h-5 w-5" aria-hidden="true" />
       </div>
       <div>
@@ -37,7 +37,7 @@ export function SpecimenImage({
   const [failed, setFailed] = useState(false);
 
   return (
-    <div className={cn("overflow-hidden bg-stone-100", className)}>
+    <div className={cn("overflow-hidden bg-[var(--bg-surface)]", className)}>
       {!src || failed ? (
         <Placeholder />
       ) : (
@@ -45,6 +45,7 @@ export function SpecimenImage({
           src={src}
           alt={alt}
           onError={() => setFailed(true)}
+          loading="lazy"
           className={cn("h-full w-full object-cover", imageClassName)}
         />
       )}

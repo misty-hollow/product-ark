@@ -46,9 +46,7 @@ function RecentArchiveCard({
     >
       <div className="flex h-9 items-center justify-between bg-[var(--bg-inset)] px-4 font-mono text-[10px] uppercase tracking-widest text-[var(--ink-muted)]">
         <span>{archiveNumber}</span>
-        <span>
-          색인 #{String(index + 1).padStart(3, "0")}
-        </span>
+        <span>색인 #{String(index + 1).padStart(3, "0")}</span>
       </div>
       <div className="grid gap-0 sm:grid-cols-[142px_1fr]">
         <SpecimenImage
@@ -131,15 +129,15 @@ export function HomePageClient({
               <span className="font-light tracking-tight">내일의 자료가 됩니다.</span>
             </h1>
             <p className="mt-8 max-w-3xl text-[var(--text-base)] font-light leading-[1.9] text-[var(--ink-secondary)]">
-              지구물건보관소는 지금 존재하는 물건의 이름, 모습, 해설과 기억을
-              기록하는 오픈 아카이브입니다.
+              지구물건보관소는 지금 존재하는 물건의 이름, 모습, 해설과 기억을 기록하는
+              오픈 아카이브입니다.
             </p>
 
             <div className="mt-9 max-w-2xl">
               <SearchBar
                 className="flex-col gap-3 sm:flex-row"
                 inputClassName="h-12 rounded-none border-[var(--border-medium)] bg-white/70 font-mono text-sm text-[var(--ink-primary)] focus-visible:ring-[var(--ink-muted)]"
-                buttonClassName="btn-primary h-12 rounded-none bg-[var(--ink-primary)] px-7 font-mono text-xs uppercase tracking-widest text-[var(--bg-base)] hover:bg-[var(--ink-primary)]"
+                buttonClassName="btn-primary h-12 w-full rounded-none bg-[var(--ink-primary)] px-7 font-mono text-xs uppercase tracking-widest text-[var(--bg-base)] hover:bg-[var(--ink-primary)] sm:w-auto"
                 placeholder="식별 번호, 물건 명칭, 또는 기록 해설로 조회..."
                 buttonText="조회"
               />
@@ -148,13 +146,13 @@ export function HomePageClient({
                   href="/items/new"
                   className="btn-primary inline-flex min-h-11 items-center justify-center bg-[var(--ink-primary)] px-6 font-mono text-xs uppercase tracking-widest text-[var(--bg-base)]"
                 >
-                  <span>기초 기록 수립하기</span>
+                  <span>신규 소장 기록 생성</span>
                 </Link>
                 <Link
                   href="/search"
                   className="inline-flex min-h-11 items-center justify-center border border-[var(--border-medium)] px-6 font-mono text-xs uppercase tracking-widest text-[var(--ink-secondary)] transition hover:border-[var(--accent-signal)] hover:text-[var(--accent-signal)]"
                 >
-                  최근 기록 살펴보기 →
+                  소장 기록 조회 →
                 </Link>
               </div>
             </div>
@@ -188,7 +186,7 @@ export function HomePageClient({
                 {stat.code}
               </p>
               <div className="mt-2 flex items-end gap-2">
-                <span className="font-display text-[64px] leading-none tracking-[-0.03em] text-[var(--ink-primary)]">
+                <span className="font-display text-[clamp(2.5rem,10vw,4rem)] leading-none tracking-[-0.03em] text-[var(--ink-primary)]">
                   {displayCount(stat.value)}
                 </span>
                 {stat.value > 0 && stat.unit ? (
@@ -216,10 +214,10 @@ export function HomePageClient({
               Recently Accessioned Objects
             </p>
             <h2 className="mt-2 font-display text-[var(--text-2xl)] font-semibold text-[var(--ink-primary)]">
-              최근 소장품에 보태진 기록들
+              최근 편입된 소장 기록
             </h2>
             <p className="mt-4 max-w-2xl text-[var(--text-base)] font-light leading-[1.9] text-[var(--ink-secondary)]">
-              공개 기록물 아래에 채워진 개별 주관적 역사입니다.
+              방금 전까지는 아무도 기록하지 않았던 물건들입니다.
             </p>
           </div>
           <Link
@@ -231,7 +229,7 @@ export function HomePageClient({
         </div>
 
         {recentItems.length > 0 ? (
-          <div className="grid gap-6 [grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr))]">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {recentItems.map((item, index) => (
               <RecentArchiveCard key={item.id} item={item} index={index} />
             ))}
@@ -239,9 +237,12 @@ export function HomePageClient({
         ) : (
           <EmptyState
             title="아직 보관소에 등록된 자료가 없습니다."
-            description="첫 번째 소장 기록을 생성할 수 있습니다. 보관소는 아직 조용하지만, 업무는 시작될 준비가 되어 있습니다."
+            description="첫 번째 소장 기록을 생성할 수 있습니다. 보관소는 아직 조용하지만 업무를 시작할 준비가 되어 있습니다."
           >
-            <Button asChild className="rounded-none bg-stone-900 text-stone-50 hover:bg-stone-800">
+            <Button
+              asChild
+              className="rounded-none bg-[var(--ink-primary)] text-[var(--bg-base)] hover:bg-[var(--accent-signal)]"
+            >
               <Link href="/items/new">신규 소장 기록 생성</Link>
             </Button>
           </EmptyState>
@@ -275,9 +276,9 @@ export function HomePageClient({
               보편적 사물의 기초 서식
             </h2>
             <p className="mt-5 max-w-2xl text-[var(--text-base)] font-light leading-[1.9] text-[rgba(247,245,239,0.65)]">
-              어제 먹은 가공 음료의 빈 병, 책상 구석에 방치된 오래된 볼펜,
-              서랍 속 잠자던 아날로그 스마트폰까지. 우리 시대의 평범한 문화
-              유산을 소장품 기록지로 영원히 박제할 수 있는 권한을 제공합니다.
+              어제 마신 가공 음료의 빈 병, 책상 구석에 방치된 오래된 볼펜, 서랍 속
+              잠자던 아날로그 스마트폰까지. 우리 시대의 평범한 문화 유산을 소장품
+              기록지로 영구 보존할 수 있습니다.
             </p>
             <Link
               href="/items/new"

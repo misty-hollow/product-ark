@@ -37,7 +37,7 @@ export default async function UserPage({ params }: UserPageProps) {
   }
 
   return (
-    <div className="archive-container bg-[#FAF9F5] py-10 text-stone-800 md:py-16">
+    <div className="archive-container bg-[var(--bg-base)] py-10 text-[var(--ink-primary)] md:py-16">
       <UserProfileCard user={user} />
 
       <section className="mt-10">
@@ -49,7 +49,10 @@ export default async function UserPage({ params }: UserPageProps) {
             </h2>
           </div>
           {id === userId ? (
-            <Button asChild className="rounded-none bg-stone-900 text-stone-50 hover:bg-stone-800">
+            <Button
+              asChild
+              className="rounded-none bg-[var(--ink-primary)] text-[var(--bg-base)] hover:bg-[var(--accent-signal)]"
+            >
               <Link href="/items/new">신규 소장 기록 생성</Link>
             </Button>
           ) : null}
@@ -64,10 +67,13 @@ export default async function UserPage({ params }: UserPageProps) {
         ) : (
           <EmptyState
             title="아직 등록한 소장 기록이 없습니다."
-            description="식별 가능한 자료가 있다면 신규 기초 기록으로 보관소에 남길 수 있습니다."
+            description="식별 가능한 자료가 있다면 신규 기초 기록으로 보관소에 보탤 수 있습니다."
           >
             {id === userId ? (
-              <Button asChild className="rounded-none bg-stone-900 text-stone-50 hover:bg-stone-800">
+              <Button
+                asChild
+                className="rounded-none bg-[var(--ink-primary)] text-[var(--bg-base)] hover:bg-[var(--accent-signal)]"
+              >
                 <Link href="/items/new">신규 소장 기록 생성</Link>
               </Button>
             ) : null}

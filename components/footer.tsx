@@ -12,7 +12,7 @@ export function Footer() {
         </div>
         <div className="flex items-center gap-2 border-y border-[var(--border-fine)] py-3 font-mono text-[10px] uppercase tracking-widest text-[var(--ink-muted)] md:border-x md:border-y-0 md:px-8 md:py-0">
           <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--accent-active)] opacity-50" />
+            <span className="absolute inline-flex h-full w-full rounded-full bg-[var(--accent-active)] opacity-50 motion-safe:animate-ping" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--accent-active)]" />
           </span>
           [Archive Status: Active]

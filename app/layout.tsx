@@ -32,6 +32,7 @@ export default function RootLayout({
             href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600;700;900&family=DM+Mono:wght@300;400;500&display=swap"
             rel="stylesheet"
           />
+          <meta name="theme-color" content="#f7f5ef" />
         </head>
         <body>
           <Header />

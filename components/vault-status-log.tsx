@@ -27,7 +27,7 @@ export function VaultStatusLog() {
     <div className="mx-auto flex max-w-4xl flex-col gap-3 border-l-[3px] border-[var(--accent-active)] bg-[var(--bg-inset)] px-4 py-3 text-left font-mono text-xs leading-6 text-[var(--ink-secondary)] sm:flex-row sm:items-center sm:justify-between">
       <div className="flex min-w-0 items-start gap-3">
         <span className="relative mt-2 flex h-2 w-2 shrink-0">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--accent-active)] opacity-50" />
+          <span className="absolute inline-flex h-full w-full motion-safe:animate-ping rounded-full bg-[var(--accent-active)] opacity-50" />
           <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--accent-active)]" />
         </span>
         <p>
