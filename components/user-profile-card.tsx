@@ -16,7 +16,7 @@ export function UserProfileCard({ user }: UserProfileCardProps) {
     <section className="border border-[var(--border-fine)] bg-[#FFFCF4] p-5 shadow-sm">
       <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-4">
-          <span className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden border border-[var(--border-fine)] bg-[var(--bg-surface)] text-3xl font-semibold text-[var(--ink-muted)]">
+          <span className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden border border-[var(--border-fine)] bg-[var(--bg-surface)] text-4xl font-light text-[var(--ink-2)]">
             {user.image ? (
               <img src={user.image} alt="" className="h-full w-full object-cover" />
             ) : (
@@ -33,7 +33,7 @@ export function UserProfileCard({ user }: UserProfileCardProps) {
           </div>
         </div>
         <div className="grid gap-3 sm:grid-cols-2">
-          <div className="border border-t-2 border-[var(--border-fine)] border-t-[var(--accent-signal)] bg-[var(--bg-surface)]/70 p-4">
+          <div className="border border-[var(--border-fine)] bg-[var(--surface-inset)] p-4 [border-top:2px_solid_var(--accent-red)]">
             <p className="flex items-center gap-2 text-xs text-[var(--ink-secondary)]">
               <Sparkles className="h-4 w-4 text-[var(--ink-secondary)]" aria-hidden="true" />
               최초 등록 자료
@@ -42,7 +42,7 @@ export function UserProfileCard({ user }: UserProfileCardProps) {
               {user._count.items}
             </p>
           </div>
-          <div className="border border-t-2 border-[var(--border-fine)] border-t-[var(--accent-active)] bg-[var(--bg-surface)]/70 p-4">
+          <div className="border border-[var(--border-fine)] bg-[var(--surface-inset)] p-4 [border-top:2px_solid_var(--accent-green)]">
             <p className="flex items-center gap-2 text-xs text-[var(--ink-secondary)]">
               <MessageCircle className="h-4 w-4 text-[var(--ink-secondary)]" aria-hidden="true" />
               관련 기억 기록

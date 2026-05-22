@@ -1,8 +1,20 @@
 export default function Loading() {
   return (
-    <div className="mx-auto flex min-h-[55vh] w-full max-w-5xl items-center justify-center px-4">
-      <div className="rounded-lg border border-stone-200 bg-white/80 px-5 py-4 font-mono text-xs uppercase tracking-[0.18em] text-stone-400 shadow-sm">
-        Loading Archive Records
+    <div className="ark-wrap flex min-h-[60vh] flex-col items-center justify-center gap-5 text-center">
+      <p className="label-mono">Loading Archive Records</p>
+      <div className="flex gap-1.5" aria-label="로딩 중">
+        {[0, 1, 2].map((index) => (
+          <span
+            key={index}
+            style={{
+              width: "6px",
+              height: "6px",
+              borderRadius: "50%",
+              background: "var(--ink-3)",
+              animation: `fadeIn 0.6s ${index * 0.15}s ease infinite alternate`
+            }}
+          />
+        ))}
       </div>
     </div>
   );

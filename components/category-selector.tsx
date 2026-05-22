@@ -82,7 +82,11 @@ export function CategorySelector({
       </div>
 
       {majorNode ? (
-        <div className="space-y-2 opacity-100 transition-all duration-200">
+        <div
+          key={majorNode.id}
+          className="anim-up space-y-2 opacity-100 transition-all duration-200"
+          style={{ animationDuration: "0.3s" }}
+        >
           <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--ink-muted)]">
             중분류
           </p>
@@ -105,7 +109,11 @@ export function CategorySelector({
       ) : null}
 
       {middleNode ? (
-        <div className="space-y-2 opacity-100 transition-all duration-200">
+        <div
+          key={middleNode.id}
+          className="anim-up space-y-2 opacity-100 transition-all duration-200"
+          style={{ animationDuration: "0.3s" }}
+        >
           <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--ink-muted)]">
             소분류
           </p>

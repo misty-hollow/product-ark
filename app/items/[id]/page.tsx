@@ -50,17 +50,17 @@ export default async function ItemDetailPage({
   const preservationStatus = "보존 상태: 양호";
 
   return (
-    <div className="archive-container bg-[var(--bg-base)] py-10 text-[var(--ink-primary)] md:py-16">
+    <div className="ark-wrap bg-[var(--surface-page)] py-10 text-[var(--ink-0)] md:py-16">
       {created ? (
-        <div className="mb-6 border border-[var(--border-medium)] bg-[var(--bg-surface)] p-4 text-sm font-semibold text-[var(--ink-primary)]">
+        <div className="mb-6 border border-[var(--accent-green)] bg-[var(--accent-green-muted)] p-4 text-sm font-semibold text-[var(--accent-green)]">
           <CheckCircle2 className="mr-2 inline h-4 w-4 text-emerald-600" aria-hidden="true" />
           기초 소장 기록 생성 완료. 본 개체는 지구물건보관소의 정식 아카이브 자료로
           편입되었습니다. 소장번호: {archiveNumber}
         </div>
       ) : null}
 
-      <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
-        <section className="print-section border border-[var(--border-fine)] bg-white/80 p-3 shadow-sm">
+      <div className="grid gap-8 lg:grid-cols-2">
+        <section className="print-section ark-card-flat p-3">
           <SpecimenImage
             src={item.imageUrl}
             alt={item.name}
@@ -71,7 +71,7 @@ export default async function ItemDetailPage({
           </p>
         </section>
 
-        <section className="print-section space-y-6 border border-[var(--border-fine)] bg-[#FFFCF4] p-5 shadow-sm">
+        <section className="print-section ark-card-flat space-y-6 p-5">
           <div className="space-y-5">
             <div className="flex flex-wrap gap-2">
               <Badge className="rounded-none border border-[var(--border-fine)] bg-[var(--bg-surface)] font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--ink-secondary)]">
@@ -115,7 +115,7 @@ export default async function ItemDetailPage({
             ].map(([label, value]) => (
               <div
                 key={label}
-                className="grid border-b border-[var(--border-fine)] transition hover:bg-stone-50 last:border-b-0 sm:grid-cols-[160px_1fr]"
+                className="grid border-b border-[var(--border-fine)] transition-colors hover:bg-ark-inset last:border-b-0 sm:grid-cols-[160px_1fr]"
               >
                 <div className="bg-[var(--bg-surface)] px-4 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--ink-muted)]">
                   {label}
@@ -123,7 +123,7 @@ export default async function ItemDetailPage({
                 <div className="px-4 py-3 text-sm text-[var(--ink-secondary)]">{value}</div>
               </div>
             ))}
-            <div className="grid border-t border-[var(--border-fine)] transition hover:bg-stone-50 sm:grid-cols-[160px_1fr]">
+            <div className="grid border-t border-[var(--border-fine)] transition-colors hover:bg-ark-inset sm:grid-cols-[160px_1fr]">
               <div className="bg-[var(--bg-surface)] px-4 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--ink-muted)]">
                 최초 등록자
               </div>

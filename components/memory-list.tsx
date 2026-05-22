@@ -19,9 +19,9 @@ type Memory = {
 
 export function MemoryList({ memories }: { memories: Memory[] }) {
   const [expanded, setExpanded] = useState(false);
-  const shouldCollapse = memories.length > 10;
-  const visibleMemories =
-    shouldCollapse && !expanded ? memories.slice(0, 5) : memories;
+  const initialShow = 5;
+  const shouldCollapse = memories.length > initialShow;
+  const visibleMemories = expanded ? memories : memories.slice(0, initialShow);
 
   if (memories.length === 0) {
     return (
@@ -72,14 +72,17 @@ export function MemoryList({ memories }: { memories: Memory[] }) {
         </article>
       ))}
 
-      {shouldCollapse && !expanded ? (
+      {shouldCollapse ? (
         <Button
           type="button"
           variant="outline"
-          onClick={() => setExpanded(true)}
-          className="min-h-11 w-full rounded-none border-[var(--border-medium)] bg-transparent font-mono text-xs tracking-widest text-[var(--ink-secondary)] hover:bg-[var(--bg-surface)]"
+          onClick={() => setExpanded((current) => !current)}
+          className="btn-ark-ghost mt-2 w-full"
+          style={{ fontSize: "var(--t-11)" }}
         >
-          더 보기 ({memories.length - visibleMemories.length}건)
+          {expanded
+            ? "접기"
+            : `기억 기록 ${memories.length - visibleMemories.length}건 더 보기 ↓`}
         </Button>
       ) : null}
     </div>

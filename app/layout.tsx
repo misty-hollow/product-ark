@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     default: "지구물건보관소",
     template: "%s | 지구물건보관소"
   },
-  description: "오늘 본 물건을 미래의 도감에 남기는 소장 기록 커뮤니티"
+  description: "지금 존재하는 물건의 이름, 모습, 기억을 보존하는 오픈 소장 기록 아카이브"
 };
 
 export default function RootLayout({
@@ -26,13 +26,9 @@ export default function RootLayout({
     <ClerkProvider localization={koKR}>
       <html lang="ko">
         <head>
+          <meta name="theme-color" content="#F5F2EA" />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-          <link
-            href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600;700;900&family=DM+Mono:wght@300;400;500&display=swap"
-            rel="stylesheet"
-          />
-          <meta name="theme-color" content="#f7f5ef" />
         </head>
         <body>
           <Header />

@@ -19,10 +19,8 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const params = await searchParams;
   const query = typeof params.q === "string" ? params.q.trim() : "";
   const items = await searchItems(query);
-  const delays = ["delay-1", "delay-2", "delay-3"];
-
   return (
-    <div className="archive-container section-spacious bg-[var(--bg-base)] text-[var(--ink-primary)]">
+    <div className="ark-wrap ark-section bg-[var(--surface-page)] text-[var(--ink-0)]">
       <div className="mb-10 space-y-5 border-l-[3px] border-[var(--accent-signal)] pl-5">
         <div>
           <p className="label">Archive Search</p>
@@ -46,7 +44,11 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
       {items.length > 0 ? (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((item, index) => (
-            <div key={item.id} className={`animate-in ${delays[index % delays.length]}`}>
+            <div
+              key={item.id}
+              className="anim-up"
+              style={{ animationDelay: `${Math.min(index * 0.06, 0.3)}s` }}
+            >
               <ItemCard item={item} />
             </div>
           ))}
