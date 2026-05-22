@@ -1,7 +1,7 @@
 export default function Loading() {
   return (
     <div className="ark-wrap flex min-h-[60vh] flex-col items-center justify-center gap-5 text-center">
-      <p className="label-mono">Loading Archive Records</p>
+      <p className="label-mono">CONNECTING TO EARTH_CORE_DATABASE...</p>
       <div className="flex gap-1.5" aria-label="로딩 중">
         {[0, 1, 2].map((index) => (
           <span

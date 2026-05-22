@@ -4,10 +4,13 @@ export function Footer() {
       <div className="ark-wrap grid gap-6 py-10 text-[var(--ink-2)] md:grid-cols-[1fr_auto_1fr] md:items-center">
         <div>
           <p className="font-serif text-[17px] font-semibold not-italic text-[var(--ink-0)]">
-            지구물건보관소
+            지구물건보관소 (地球物件保管所)
           </p>
           <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--ink-3)]">
-            오늘의 사물을 내일의 유산으로
+            THE PERMANENT ARCHIVE OF TRIVIAL SPECIMENS
+          </p>
+          <p className="mt-3 max-w-md text-xs leading-5 text-[var(--ink-2)]">
+            본 아카이브는 사소한 일상 개체가 소실되는 상황을 대비해 출범했습니다.
           </p>
         </div>
         <div className="inline-flex w-fit items-center gap-2 border border-[var(--border-sm)] px-4 py-2 font-mono text-[10px] uppercase tracking-widest text-[var(--ink-3)]">

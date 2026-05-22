@@ -59,8 +59,18 @@ export default async function ItemDetailPage({
         </div>
       ) : null}
 
-      <div className="grid gap-8 lg:grid-cols-2">
-        <section className="print-section ark-card-flat p-3">
+      <div className="print-only mb-6 border-2 border-black p-5">
+        <p className="font-mono text-xs uppercase tracking-widest">Earth Object Archive</p>
+        <h1 className="mt-2 font-serif text-3xl font-semibold">보존 증명서</h1>
+        <p className="mt-4 text-sm">식별번호: {archiveNumber}</p>
+        <p className="text-sm">보존 대상: {item.name}</p>
+        <p className="mt-8 border-t border-black pt-4 text-xs">
+          보관소장 인장: 본 자료는 지구물건보관소의 생활사 아카이브에 편입되었음을 증명합니다.
+        </p>
+      </div>
+
+      <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
+        <section className="print-section ark-card-flat crosshair-corner p-3">
           <SpecimenImage
             src={item.imageUrl}
             alt={item.name}
@@ -71,27 +81,30 @@ export default async function ItemDetailPage({
           </p>
         </section>
 
-        <section className="print-section ark-card-flat space-y-6 p-5">
+        <section className="print-section ark-card-flat crosshair-corner space-y-6 p-5">
           <div className="space-y-5">
-            <div className="flex flex-wrap gap-2">
-              <Badge className="rounded-none border border-[var(--border-fine)] bg-[var(--bg-surface)] font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--ink-secondary)]">
-                {archiveNumber}
-              </Badge>
-              <Badge
-                variant="outline"
-                className="rounded-none border-[var(--border-fine)] font-mono text-[10px] text-[var(--ink-secondary)]"
-              >
-                {categoryPath}
-              </Badge>
-              <Badge className="hidden rounded-none border border-emerald-200/70 bg-emerald-50 text-[10px] font-medium text-emerald-800 sm:inline-flex">
-                {preservationStatus}
-              </Badge>
-              <Badge
-                variant="outline"
-                className="hidden rounded-none border-[var(--border-fine)] font-mono text-[10px] text-[var(--ink-muted)] sm:inline-flex"
-              >
-                {item.slug}
-              </Badge>
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+              <div className="flex flex-wrap gap-2">
+                <Badge className="rounded-none border border-[var(--border-fine)] bg-[var(--bg-surface)] font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--ink-secondary)]">
+                  {archiveNumber}
+                </Badge>
+                <Badge
+                  variant="outline"
+                  className="rounded-none border-[var(--border-fine)] font-mono text-[10px] text-[var(--ink-secondary)]"
+                >
+                  {categoryPath}
+                </Badge>
+                <Badge className="hidden rounded-none border border-emerald-200/70 bg-emerald-50 text-[10px] font-medium text-emerald-800 sm:inline-flex">
+                  {preservationStatus}
+                </Badge>
+                <Badge
+                  variant="outline"
+                  className="hidden rounded-none border-[var(--border-fine)] font-mono text-[10px] text-[var(--ink-muted)] sm:inline-flex"
+                >
+                  {item.slug}
+                </Badge>
+              </div>
+              <span className="seal-red shrink-0">Archive<br />Verified</span>
             </div>
             <div>
               <p className="label mb-3">{archiveNumber}</p>
@@ -129,7 +142,7 @@ export default async function ItemDetailPage({
               </div>
               <div className="flex flex-wrap items-center gap-2 px-4 py-3 text-sm text-[var(--ink-secondary)]">
                 <Sparkles className="h-4 w-4 text-amber-700" aria-hidden="true" />
-                <span>최초 기초 기록 기여자:</span>
+                <span>최초 등록자:</span>
                 <Link
                   href={`/users/${item.firstRecorder.id}`}
                   className="font-semibold underline-offset-4 hover:underline"

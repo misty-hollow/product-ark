@@ -26,9 +26,11 @@ export default async function NewItemPage({ searchParams }: NewItemPageProps) {
   const categoryTree = await getActiveCategoryTree();
 
   return (
-    <div className="mx-auto w-full max-w-3xl bg-[var(--surface-page)] px-4 py-10 text-[var(--ink-0)]">
-      <NewItemPageIntro />
-      <ItemForm initialName={initialName} categories={categoryTree} />
+    <div className="ark-wrap bg-[var(--surface-page)] py-10 text-[var(--ink-0)] md:py-16">
+      <div className="mx-auto max-w-4xl">
+        <NewItemPageIntro />
+        <ItemForm initialName={initialName} categories={categoryTree} />
+      </div>
     </div>
   );
 }

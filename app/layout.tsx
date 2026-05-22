@@ -14,7 +14,8 @@ export const metadata: Metadata = {
     default: "지구물건보관소",
     template: "%s | 지구물건보관소"
   },
-  description: "지금 존재하는 물건의 이름, 모습, 기억을 보존하는 오픈 소장 기록 아카이브"
+  description:
+    "지금 존재하는 물건의 이름, 모습, 해설과 기억을 보존하는 사소한 생활사 아카이브"
 };
 
 export default function RootLayout({

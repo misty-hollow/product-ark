@@ -13,6 +13,7 @@ export function EmptyState({ title, description, children }: EmptyStateProps) {
   return (
     <Card className="rounded-none border-dashed border-[var(--border-md)] bg-[var(--surface-card)]/80 shadow-none">
       <CardContent className="flex flex-col items-center gap-4 p-8 text-center">
+        <p className="label-mono text-[var(--accent-red)]">Vacancy Notice</p>
         <span className="flex h-12 w-12 items-center justify-center border border-[var(--border-sm)] bg-[var(--surface-inset)] text-[var(--ink-2)]">
           <Archive className="h-6 w-6" aria-hidden="true" />
         </span>

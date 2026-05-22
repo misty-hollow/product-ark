@@ -25,10 +25,10 @@ export function UserProfileCard({ user }: UserProfileCardProps) {
           </span>
           <div>
             <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--ink-muted)]">
-              Keeper Profile
+              Keeper Identity Desk
             </p>
             <h1 className="mt-1 text-[var(--text-2xl)] font-semibold text-[var(--ink-primary)]">
-              기록자 프로필 · {user.name}
+              기록관 신원 확인소 · {user.name}
             </h1>
           </div>
         </div>
@@ -36,7 +36,7 @@ export function UserProfileCard({ user }: UserProfileCardProps) {
           <div className="border border-[var(--border-fine)] bg-[var(--surface-inset)] p-4 [border-top:2px_solid_var(--accent-red)]">
             <p className="flex items-center gap-2 text-xs text-[var(--ink-secondary)]">
               <Sparkles className="h-4 w-4 text-[var(--ink-secondary)]" aria-hidden="true" />
-              최초 등록 자료
+              최초 등재 사물 실적
             </p>
             <p className="mt-2 font-mono text-3xl font-semibold text-[var(--ink-primary)]">
               {user._count.items}
@@ -55,7 +55,7 @@ export function UserProfileCard({ user }: UserProfileCardProps) {
       </div>
       <div className="mt-5 border border-[var(--border-fine)] bg-[var(--bg-surface)]/70 p-4 text-sm leading-7 text-[var(--ink-secondary)]">
         <Archive className="mr-2 inline h-4 w-4 text-[var(--ink-secondary)]" aria-hidden="true" />
-        이 보관인은 지구물건보관소에 {user._count.items}개의 소장 기록을 처음 남겼습니다.
+        보존 등재 유공: 이 기록관은 지구물건보관소에 {user._count.items}개의 소장 기록을 처음 남겼습니다.
       </div>
     </section>
   );

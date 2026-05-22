@@ -19,8 +19,8 @@ export function Header() {
   const profileHref = user?.id ? `/users/${user.id}` : "/sign-in";
   const mobileItems = [
     { href: "/", icon: Archive, label: "보관소" },
-    { href: "/search", icon: Search, label: "조회" },
-    { href: "/items/new", icon: Plus, label: "기록" },
+    { href: "/search", icon: Search, label: "색인" },
+    { href: "/items/new", icon: Plus, label: "등재" },
     { href: profileHref, icon: UserRound, label: "프로필" }
   ];
 
@@ -65,7 +65,7 @@ export function Header() {
               </svg>
             </span>
             <span className="min-w-0">
-              <span className="block truncate font-serif text-[17px] font-semibold leading-none tracking-tight text-[var(--ink-0)]">
+              <span className="block truncate font-serif text-[17px] font-semibold leading-none tracking-normal text-[var(--ink-0)]">
                 지구물건보관소
               </span>
               <span className="label-mono-sm mt-0.5 block truncate">
@@ -83,14 +83,14 @@ export function Header() {
               }}
             >
               <Search size={13} aria-hidden="true" />
-              소장 기록 조회
+              사물 색인 검색
             </Link>
           </nav>
 
           <div className="flex items-center gap-2">
             <Link href="/items/new" className="btn-ark-primary hidden gap-1.5 sm:inline-flex">
               <Plus size={14} aria-hidden="true" />
-              신규 기록
+              신규 소장 등재
             </Link>
             <SignedOut>
               <SignInButton mode="modal">

@@ -43,7 +43,7 @@ export default async function UserPage({ params }: UserPageProps) {
       <section className="mt-10">
         <div className="mb-6 flex flex-col gap-4 border-l-[3px] border-[var(--accent-signal)] pl-5 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="label">Keeper Ledger</p>
+            <p className="label">Keeper Registry Ledger</p>
             <h2 className="mt-2 text-[var(--text-2xl)] font-semibold">
               등록한 소장 기록
             </h2>
@@ -53,7 +53,7 @@ export default async function UserPage({ params }: UserPageProps) {
               asChild
               className="rounded-none bg-[var(--ink-primary)] text-[var(--bg-base)] hover:bg-[var(--accent-signal)]"
             >
-              <Link href="/items/new">신규 소장 기록 생성</Link>
+              <Link href="/items/new">기초 소장 서식 수립</Link>
             </Button>
           ) : null}
         </div>
@@ -66,7 +66,7 @@ export default async function UserPage({ params }: UserPageProps) {
           </div>
         ) : (
           <EmptyState
-            title="아직 등록한 소장 기록이 없습니다."
+            title="아직 최초 등재 사물 실적이 없습니다."
             description="식별 가능한 자료가 있다면 신규 기초 기록으로 보관소에 보탤 수 있습니다."
           >
             {id === userId ? (
@@ -74,7 +74,7 @@ export default async function UserPage({ params }: UserPageProps) {
                 asChild
                 className="rounded-none bg-[var(--ink-primary)] text-[var(--bg-base)] hover:bg-[var(--accent-signal)]"
               >
-                <Link href="/items/new">신규 소장 기록 생성</Link>
+                <Link href="/items/new">기초 소장 서식 수립</Link>
               </Button>
             ) : null}
           </EmptyState>

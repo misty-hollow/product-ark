@@ -58,10 +58,10 @@ export function CategorySelector({
       <div>
         <p className="text-sm font-semibold text-[var(--ink-primary)]">
           <span className="mr-2 font-mono text-xs text-[var(--ink-muted)]">04.</span>
-          분류 체계 <span className="text-xs text-[var(--ink-muted)]">필수</span>
+          대표 분류 <span className="text-xs text-[var(--ink-muted)]">필수</span>
         </p>
         <p className="mt-1 text-xs leading-5 text-[var(--ink-secondary)]">
-          대분류, 중분류, 소분류를 차례로 선택합니다. 소분류까지 선택하면 보관용 분류가 완성됩니다.
+          보관소 기준 대표 분류를 대분류, 중분류, 소분류 순서로 확정합니다.
         </p>
       </div>
 
@@ -146,7 +146,7 @@ export function CategorySelector({
             selectedPath ? "font-semibold text-[var(--ink-primary)]" : ""
           )}
         >
-          저장될 분류:
+          보관소 기준 대표 분류:
         </span>
         <span>{selectedPath || "소분류까지 선택하면 표시됩니다"}</span>
       </div>

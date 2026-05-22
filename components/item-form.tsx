@@ -214,7 +214,7 @@ export function ItemForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="ark-card-flat space-y-6 p-5 md:p-7">
       <div className="grid gap-5">
         <div className="space-y-2">
           <Label htmlFor="name" className="text-[var(--ink-primary)]">
@@ -285,10 +285,10 @@ export function ItemForm({
                   [ REGISTER IMAGE SPECIMEN ]
                 </span>
                 <span className="text-sm font-semibold text-[var(--ink-primary)]">
-                  표본 이미지를 선택하세요
+                  실측/스캔 베드에 식별 이미지를 배치하십시오
                 </span>
                 <span className="max-w-sm text-xs leading-5 text-[var(--ink-secondary)]">
-                  대상의 형태를 식별할 수 있는 이미지를 등록하십시오.
+                  대상의 형태, 표면, 색상 또는 사용 흔적을 식별할 수 있는 보존 사진을 등록하십시오.
                 </span>
                 <span className="text-xs text-[var(--ink-muted)]">
                   jpg, jpeg, png, webp / 최대 5MB
@@ -322,14 +322,14 @@ export function ItemForm({
           />
           <p
             className={`font-mono text-xs ${
-              description.length >= 160
+              description.length >= 150
                 ? "text-red-500"
-                : description.length >= 140
+                : description.length >= 120
                   ? "text-amber-600"
                   : "text-[var(--ink-muted)]"
             }`}
           >
-            {description.length}/160
+            기록 규격 부합도: {description.length}/160 자
           </p>
         </div>
 
@@ -375,7 +375,7 @@ export function ItemForm({
         {isPending
           ? submitStep === "uploading"
             ? "이미지 보존 중..."
-            : "기록 저장 중..."
+            : "기초 기록 등록 중..."
           : "기초 기록 등록"}
       </Button>
     </form>

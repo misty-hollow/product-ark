@@ -36,11 +36,17 @@ export function MemoryForm({ itemId }: { itemId: string }) {
       onSubmit={handleSubmit}
       className="space-y-3 border border-[var(--border-fine)] bg-[#FFFCF4] p-4 shadow-sm"
     >
+      <div>
+        <p className="label-mono">Memory Testimony Form</p>
+        <h3 className="mt-1 font-serif text-xl font-semibold text-[var(--ink-primary)]">
+          기억 기록 남기기
+        </h3>
+      </div>
       <Textarea
         value={content}
         onChange={(event) => setContent(event.target.value)}
         maxLength={500}
-        placeholder="예: 본 진술인은 2010년경 이 물건을 주로 독서실에서 사용했으며, 마찰음이 다소 거슬렸던 기억이 있음."
+        placeholder="예: 초등학교 소풍 때 친구들과 나눠 먹던 과자였습니다."
         className="rounded-none border-x-0 border-t-0 border-b-[var(--border-medium)] bg-transparent text-[var(--ink-secondary)] placeholder:text-[var(--ink-muted)] focus-visible:border-[var(--ink-primary)] focus-visible:ring-0"
       />
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -55,7 +61,7 @@ export function MemoryForm({ itemId }: { itemId: string }) {
           ) : (
             <MessageCirclePlus className="mr-2 h-4 w-4" aria-hidden="true" />
           )}
-          기억 기록 보완 및 증언 제출
+          시대 증언 제출
         </Button>
       </div>
       {error ? <p className="text-sm text-destructive">{error}</p> : null}

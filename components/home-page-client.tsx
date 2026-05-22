@@ -57,7 +57,7 @@ function RecentArchiveCard({
         />
         <div>
           <span className="badge-ark">소장 기록</span>
-          <p className="mt-4 font-serif text-[18px] font-medium tracking-[-0.02em] text-[var(--ink-0)]">
+          <p className="mt-4 font-serif text-[18px] font-medium tracking-normal text-[var(--ink-0)]">
             {item.name}
           </p>
           <p className="mt-3 line-clamp-3 text-[13px] leading-[1.75] text-[var(--ink-2)]">
@@ -121,10 +121,10 @@ export function HomePageClient({
               <span className="h-2 w-2 bg-[var(--accent-red)]" />
               [OPEN OBJECT REGISTRY]
             </div>
-            <h1 className="mt-8 max-w-5xl font-serif text-[var(--t-hero)] font-bold leading-none tracking-[-0.045em] text-[var(--ink-0)]">
+            <h1 className="mt-8 max-w-5xl font-serif text-5xl font-bold leading-tight tracking-normal text-[var(--ink-0)] md:text-7xl">
               <span className="font-bold">오늘의 물건은</span>
               <br />
-              <span className="font-light tracking-tight text-[var(--ink-2)]">
+              <span className="font-light tracking-normal text-[var(--ink-2)]">
                 내일의 자료가 됩니다.
               </span>
             </h1>
@@ -138,21 +138,21 @@ export function HomePageClient({
                 className="flex-col gap-3 sm:flex-row"
                 inputClassName="input-ark h-12 bg-[var(--surface-card)] font-mono text-sm"
                 buttonClassName="btn-ark-primary h-12 w-full sm:w-auto"
-                placeholder="식별 번호, 물건 명칭, 또는 기록 해설로 조회..."
-                buttonText="조회"
+                placeholder="보관 사물 색인 명칭 입력... 예: 모나미 153 볼펜"
+                buttonText="색인 조회"
               />
               <div className="mt-5 flex flex-col gap-4 sm:flex-row">
                 <Link
                   href="/items/new"
                   className="btn-ark-primary"
                 >
-                  신규 소장 기록 생성
+                  기초 보존 서식 수립하기
                 </Link>
                 <Link
                   href="/search"
                   className="btn-ark-ghost"
                 >
-                  소장 기록 조회 →
+                  실시간 서류 철 열람
                 </Link>
               </div>
             </div>
@@ -186,7 +186,7 @@ export function HomePageClient({
                 {stat.code}
               </p>
               <div className="mt-2 flex items-end gap-2">
-                <span className="font-serif text-[clamp(2.5rem,10vw,4rem)] leading-none tracking-[-0.03em] text-[var(--ink-0)]">
+                <span className="font-serif text-5xl leading-none tracking-normal text-[var(--ink-0)] md:text-6xl">
                   {displayCount(stat.value)}
                 </span>
                 {stat.value > 0 && stat.unit ? (
@@ -247,6 +247,34 @@ export function HomePageClient({
             </Button>
           </EmptyState>
         )}
+      </section>
+
+      <section className="ark-wrap pb-16">
+        <div className="grid gap-5 border-y border-[var(--border-xs)] py-10 lg:grid-cols-[0.85fr_1.15fr]">
+          <div className="ark-accent-bar">
+            <p className="label-mono">Memory Ledger Intake</p>
+            <h2 className="mt-2 font-serif text-[var(--t-36)] font-semibold text-[var(--ink-0)]">
+              기억 기록 접수대
+            </h2>
+            <p className="mt-4 text-[var(--t-15)] leading-[1.9] text-[var(--ink-2)]">
+              하나의 물건은 여러 사람의 시간표를 통과합니다. 이미 등록된 사물에
+              개인의 사용 기억을 보태면, 보관소의 생활사 장부가 조금 더 정확해집니다.
+            </p>
+          </div>
+          <div className="ark-card-flat crosshair-corner p-6">
+            <p className="label-mono text-[var(--accent-red)]">Related Testimony Protocol</p>
+            <p className="mt-4 font-serif text-2xl font-semibold text-[var(--ink-0)]">
+              기억은 댓글이 아니라 시대 증언으로 편철됩니다.
+            </p>
+            <p className="mt-4 text-sm leading-7 text-[var(--ink-2)]">
+              상세 기록지에서 기억 기록을 남기면 MEM 식별번호와 함께 해당 사물의
+              장부에 보존됩니다. 짧은 한 줄이라도 물건의 사용 환경을 설명하는 자료가 됩니다.
+            </p>
+            <Link href="/search" className="btn-ark-ghost mt-6">
+              기억을 보탤 사물 찾기
+            </Link>
+          </div>
+        </div>
       </section>
 
       <section className="ark-wrap pb-20 md:pb-32">

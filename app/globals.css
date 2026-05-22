@@ -43,7 +43,7 @@
     --t-26: 1.625rem;
     --t-36: 2.25rem;
     --t-52: 3.25rem;
-    --t-hero: clamp(3.25rem, 7.5vw, 6.5rem);
+    --t-hero: 4.75rem;
 
     /* Backward-compatible aliases used by existing components. */
     --bg-base: var(--surface-page);
@@ -118,7 +118,7 @@
     color: var(--ink-0);
     font-family: "Noto Serif KR", serif;
     line-height: 1.1;
-    letter-spacing: -0.025em;
+    letter-spacing: 0;
     word-break: keep-all;
   }
 
@@ -152,14 +152,20 @@
     body {
       background: #fff !important;
       color: #111 !important;
+      font-size: 11pt;
     }
 
     header,
+    footer,
     nav,
     form,
     button,
     .no-print {
       display: none !important;
+    }
+
+    .print-only {
+      display: block !important;
     }
 
     .print-section {
@@ -225,6 +231,72 @@
     background: var(--surface-card);
     border: 1px solid var(--border-xs);
     border-radius: var(--r-none);
+  }
+
+  .ark-card-header {
+    display: flex;
+    min-height: 2.25rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    border-bottom: 1px solid var(--border-xs);
+    background: var(--surface-inset);
+    padding-inline: 1rem;
+    font-family: "DM Mono", monospace;
+    font-size: var(--t-10);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .seal-red {
+    display: inline-flex;
+    aspect-ratio: 1;
+    width: 6rem;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--accent-red);
+    border-radius: 999px;
+    color: var(--accent-red);
+    font-family: "DM Mono", monospace;
+    font-size: var(--t-10);
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    line-height: 1.35;
+    text-align: center;
+    text-transform: uppercase;
+    transform: rotate(-9deg);
+  }
+
+  .crosshair-corner {
+    position: relative;
+  }
+
+  .crosshair-corner::before,
+  .crosshair-corner::after {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    pointer-events: none;
+  }
+
+  .crosshair-corner::before {
+    left: 10px;
+    top: 10px;
+    border-left: 1px solid var(--border-md);
+    border-top: 1px solid var(--border-md);
+  }
+
+  .crosshair-corner::after {
+    right: 10px;
+    bottom: 10px;
+    border-right: 1px solid var(--border-md);
+    border-bottom: 1px solid var(--border-md);
+  }
+
+  .print-only {
+    display: none;
   }
 
   .btn-ark-primary {
