@@ -26,7 +26,7 @@ export default async function NewItemPage({ searchParams }: NewItemPageProps) {
   const categoryTree = await getActiveCategoryTree();
 
   return (
-    <div className="mx-auto w-full max-w-3xl bg-[#FAF9F5] px-4 py-10 text-stone-900">
+    <div className="mx-auto w-full max-w-3xl bg-[var(--surface-page)] px-4 py-10 text-[var(--ink-0)]">
       <NewItemPageIntro />
       <ItemForm initialName={initialName} categories={categoryTree} />
     </div>

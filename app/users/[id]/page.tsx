@@ -37,7 +37,7 @@ export default async function UserPage({ params }: UserPageProps) {
   }
 
   return (
-    <div className="archive-container bg-[var(--bg-base)] py-10 text-[var(--ink-primary)] md:py-16">
+    <div className="ark-wrap bg-[var(--surface-page)] py-10 text-[var(--ink-0)] md:py-16">
       <UserProfileCard user={user} />
 
       <section className="mt-10">
